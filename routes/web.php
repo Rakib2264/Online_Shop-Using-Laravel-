@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminLoginController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\HomeController;
+use App\Http\Controllers\Admin\ImagesController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -39,6 +40,10 @@ Route::group(['prefix'=>'admin'],function(){
         Route::get('/category/create',[CategoryController::class,'create'])->name('category.create');
         Route::get('/categorys',[CategoryController::class,'index'])->name('category.index');
         Route::post('/category/store',[CategoryController::class,'store'])->name('category.store');
+        Route::post('/upload/image',[ImagesController::class,'create'])->name('temp-images.create');
+
+
+
 
         Route::get('/getSlug',function(Request $request){
             $slug = '';

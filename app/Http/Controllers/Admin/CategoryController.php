@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\Catimage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
@@ -26,30 +28,47 @@ class CategoryController extends Controller
    }
 
    public function store(Request $request){
-    $validator = Validator::make($request->all(),[
-
-        'name'=>'required',
-        'slug'=>'required|unique:categories,slug',
+    $validator = Validator::make($request->all(), [
+        'name' => 'required',
+        'slug' => 'required|unique:categories,slug',
     ]);
+
     if ($validator->fails()) {
         return response()->json([
-            'status'=>'faild',
-            'errors'=>$validator->messages()
+            'status' => 'failed',
+            'errors' => $validator->messages()
         ]);
-    }else{
-
-        $category = new Category();
-        $category->name = $request->name;
-        $category->slug = $request->slug;
-        $category->status = $request->status;
-        $category->save();
-
-        session()->flash('success','Category Added Successfully');
-        return response()->json([
-            'msg'=>'Category Added Success'
-         ]);
-
     }
 
+    $category = new Category();
+    $category->name = $request->name;
+    $category->slug = $request->slug;
+    $category->status = $request->status;
+    $category->save();
+
+    if (!empty($request->image_id)) {
+        $catimage = Catimage::find($request->image_id);
+
+        if ($catimage) {
+            $ext = pathinfo($catimage->name, PATHINFO_EXTENSION);
+            $newImageName = $category->id . '.' . $ext;
+            $sourcePath = public_path('category') . '/' . $catimage->name;
+            $destinationPath = public_path('up/cat') . '/' . $newImageName;
+
+            if (file_exists($sourcePath)) {
+                copy($sourcePath, $destinationPath);
+                $category->image = $newImageName;
+                $category->save();
+            }
+        }
+    }
+
+    session()->flash('success', 'Category Added Successfully');
+    return response()->json([
+        'status' => 'success',
+        'msg' => 'Category Added Successfully'
+    ]);
+
    }
+
 }
