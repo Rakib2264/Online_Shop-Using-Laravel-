@@ -9,7 +9,13 @@ use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
 {
-   public function index(){
+   public function index(Request $request){
+    $categories = Category::latest();
+    if(!empty($request->get('keyword'))){
+        $categories = $categories->where('name','like','%'.$request->get('keyword').'%');
+    }
+    $categories = $categories->paginate(5);
+    return view('admin.category.list',compact('categories'));
 
    }
 

@@ -8,7 +8,7 @@
                     <h1>Create Category</h1>
                 </div>
                 <div class="col-sm-6 text-right">
-                    <a href="#" class="btn btn-primary">Back</a>
+                    <a href="{{route('category.index')}}" class="btn btn-primary">Back</a>
                 </div>
             </div>
         </div>
@@ -32,7 +32,7 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="slug" class="form-label">Slug:</label>
-                                    <input type="text" name="slug" id="slug" class="form-control"
+                                    <input type="text" readonly name="slug" id="slug" class="form-control"
                                         placeholder="Enter slug">
                                     <p></p>
                                 </div>
@@ -62,6 +62,7 @@
         $('#categoryForm').submit(function(e) {
             e.preventDefault();
             var formData = $(this);
+            $("button[type=submit]").prop('disabled',true);
             //    console.log(formData.serializeArray());
             //    return false;
             $.ajax({
@@ -70,6 +71,7 @@
                 dataType: 'json',
                 data: formData.serializeArray(),
                 success: function(res) {
+                    $("button[type=submit]").prop('disabled',false);
 
                     if (res.status === 'faild') {
                         $('#name').addClass('is-invalid');
@@ -81,7 +83,7 @@
                     } else {
 
 
-                        alert(res.msg)
+                        window.location.href="{{ route('category.index') }}";
 
                     }
 
@@ -93,8 +95,26 @@
                 }
 
             });
-
-
         });
+
+        // create slug
+        $('#name').change(function(){
+            var element=$(this);
+            $.ajax({
+                        url: '{{ route('getSlug') }}',
+                        type: 'get',
+                         data: {title:element.val()},
+                        success: function(res) {
+                             if (res['status']==true) {
+                                 $("#slug").val(res['slug']);
+                             }
+
+                        }
+
+
+                    });
+        })
+
+
     </script>
 @endsection
