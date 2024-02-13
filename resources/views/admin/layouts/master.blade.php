@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Laravel Shop :: Administrative Panel</title>
+    <title>Shop</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
@@ -29,11 +29,11 @@
                             class="fas fa-bars"></i></a>
                 </li>
             </ul>
-            <div class="navbar-nav pl-2">
-                <!-- <ol class="breadcrumb p-0 m-0 bg-white">
+            {{-- <div class="navbar-nav pl-2">
+                 <ol class="breadcrumb p-0 m-0 bg-white">
       <li class="breadcrumb-item active">Dashboard</li>
-     </ol> -->
-            </div>
+     </ol>
+            </div> --}}
 
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">

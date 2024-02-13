@@ -4,6 +4,8 @@ use App\Http\Controllers\Admin\AdminLoginController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Admin\ImagesController;
+use App\Http\Controllers\Admin\SubCategory;
+use App\Http\Controllers\Admin\SubCategoryController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -29,7 +31,6 @@ Route::group(['prefix'=>'admin'],function(){
         Route::get('/login',[AdminLoginController::class,'index'])->name('admin.login');
         Route::post('/authenticate',[AdminLoginController::class,'authenticate'])->name('admin.authenticate');
 
-
     });
 
     Route::group(['middleware'=>'admin.auth'],function(){
@@ -45,6 +46,10 @@ Route::group(['prefix'=>'admin'],function(){
         Route::put('/categoryes/{update}/update',[CategoryController::class,'update'])->name('category.update');
         Route::delete('/categoryes/{update}/delete',[CategoryController::class,'destroy'])->name('category.delete');
 
+        // Sub Category
+        Route::get('/sub-category/create',[SubCategoryController::class,'create'])->name('subcategory.create');
+        Route::post('/sub-category/store',[SubCategoryController::class,'store'])->name('subcategory.store');
+        Route::get('/sub-categorys',[SubCategoryController::class,'index'])->name('subcategory.index');
 
 
 
