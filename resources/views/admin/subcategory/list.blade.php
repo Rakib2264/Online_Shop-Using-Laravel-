@@ -49,7 +49,6 @@
                                 <th>Slug</th>
                                 <th>Category Name</th>
                                 <th>Status</th>
-                                <th width="100">Status</th>
                                 <th width="100">Action</th>
                             </tr>
                         </thead>
@@ -81,7 +80,7 @@
 
                                         </td>
                                         <td>
-                                            <a href="#">
+                                            <a href="{{route('subcategory.edit',$subcategory->id)}}">
                                                 <svg class="filament-link-icon w-4 h-4 mr-1"
                                                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
                                                     fill="currentColor" aria-hidden="true">
@@ -90,7 +89,7 @@
                                                     </path>
                                                 </svg>
                                             </a>
-                                            <a href="#" onclick="deleteCategory({{ $subcategory->id }})"
+                                            <a href="#" onclick="deletesubCategory({{ $subcategory->id }})"
                                                 class="text-danger w-4 h-4 mr-1">
                                                 <svg wire:loading.remove.delay="" wire:target=""
                                                     class="filament-link-icon w-4 h-4 mr-1"
@@ -123,9 +122,9 @@
 @section('customJs')
 <script>
 
-function deleteCategory(id){
+function deletesubCategory(id){
 
-var url = '{{route("category.delete","ID")}}'
+var url = '{{route("subcategory.delete","ID")}}'
 var newUrl = url.replace("ID",id)
 
 
@@ -139,7 +138,7 @@ if (confirm("Are You Sure You Want To Delete This Category")) {
         },
         success: function(res) {
             // Redirect to the category index page upon successful deletion
-            window.location.href = "{{ route('category.index') }}";
+            window.location.href = "{{ route('subcategory.index') }}";
         },
         error: function(xhr, status, error) {
             // Handle error, if any
