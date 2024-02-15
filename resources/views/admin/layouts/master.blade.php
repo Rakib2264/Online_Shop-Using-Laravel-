@@ -12,6 +12,7 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ asset('admin') }}/plugins/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('admin/plugins/dropzone/min/dropzone.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('admin') }}/plugins/summernote/summernote-bs4.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('admin') }}/css/adminlte.min.css">
     <link rel="stylesheet" href="{{ asset('admin') }}/css/custom.css">
@@ -75,27 +76,46 @@
         <!-- /.content-wrapper -->
         <footer class="main-footer">
 
-            <strong>Copyright &copy; 2014-2022 AmazingShop All rights reserved.
+            <strong>Copyright &copy; {{date('Y')}} Rakib Khan All rights reserved.
         </footer>
 
     </div>
     <!-- ./wrapper -->
     <!-- jQuery -->
     <script src="{{ asset('admin') }}/plugins/jquery/jquery.min.js"></script>
-    <script src="{{ asset('admin/plugins/dropzone/min/dropzone.min.js') }}"></script>
     <!-- Bootstrap 4 -->
     <script src="{{ asset('admin') }}/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- AdminLTE App -->
     <script src="{{ asset('admin') }}/js/adminlte.min.js"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="{{ asset('admin') }}/js/demo.js"></script>
+    <script src="{{ asset('admin') }}/plugins/dropzone/dropzone.js"></script>
+
+    <script src="{{ asset('admin') }}/plugins/summernote/summernote-bs4.min.js"></script>
     @yield('customJs')
+
+    </script>
     <script>
-        $.ajaxSetup({
-    headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
+         Dropzone.autoDiscover = false;
+            $(function () {
+                // Summernote
+                $('.summernote').summernote({
+                    height: '300px'
+                });
+
+                const dropzone = $("#image").dropzone({
+                    url:  "create-product.html",
+                    maxFiles: 5,
+                    addRemoveLinks: true,
+                    acceptedFiles: "image/jpeg,image/png,image/gif",
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }, success: function(file, response){
+                        $("#image_id").val(response.id);
+                    }
+                });
+
+            });
     </script>
 </body>
 

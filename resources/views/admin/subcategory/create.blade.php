@@ -5,7 +5,7 @@
             <div class="row mb-2">
 
                 <div class="col text-right mt-4">
-                    <a href="subcategory.html" class="btn btn-primary">Back</a>
+                    <a href="{{route('subcategory.index')}}" class="btn btn-primary">Back</a>
                 </div>
             </div>
         </div>
