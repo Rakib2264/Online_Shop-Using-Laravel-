@@ -80,7 +80,15 @@
 
 @section('customJs')
     <script>
-      $('#subCategoryForm').submit(function(e) {
+     $(document).ready(function(){
+        $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+
+        $('#subCategoryForm').submit(function(e) {
     e.preventDefault();
     var formData = $(this);
     $("button[type=submit]").prop('disabled', true);
@@ -145,6 +153,7 @@
 
                 }
             });
-        })
+        });
+     })
     </script>
 @endsection

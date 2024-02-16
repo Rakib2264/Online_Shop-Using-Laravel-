@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Admin\ImagesController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ProductSubCategoryController;
 use App\Http\Controllers\Admin\SubCategory;
 use App\Http\Controllers\Admin\SubCategoryController;
 use Illuminate\Support\Facades\Route;
@@ -66,7 +67,13 @@ Route::group(['prefix'=>'admin'],function(){
 
         // Product
         Route::get('/product/create',[ProductController::class,'create'])->name('product.create');
+        Route::post('/product/store',[ProductController::class,'store'])->name('product.store');
 
+
+
+
+        //if categoey select then subcategory i mean category wize subcategoey show
+        Route::get('/product/sub_cat',[ProductSubCategoryController::class,'index'])->name('product.sub.create');
 
 
         // slug

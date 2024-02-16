@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Shop</title>
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="csrf-token" content="{{csrf_token() }}">
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -90,11 +90,9 @@
     <!-- AdminLTE for demo purposes -->
     <script src="{{ asset('admin') }}/js/demo.js"></script>
     <script src="{{ asset('admin') }}/plugins/dropzone/dropzone.js"></script>
-
     <script src="{{ asset('admin') }}/plugins/summernote/summernote-bs4.min.js"></script>
     @yield('customJs')
 
-    </script>
     <script>
          Dropzone.autoDiscover = false;
             $(function () {
