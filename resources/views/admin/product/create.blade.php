@@ -59,6 +59,9 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row" id="product_gallery">
+
+                        </div>
                         <div class="card mb-3">
                             <div class="card-body">
                                 <h2 class="h4 mb-3">Pricing</h2>
@@ -94,7 +97,7 @@
                                             <label for="sku">SKU (Stock Keeping Unit)</label>
                                             <input type="text" name="sku" id="sku" class="form-control"
                                                 placeholder="sku">
-                                                <p class="error"></p>
+                                            <p class="error"></p>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -239,21 +242,23 @@
 
                         if (res.status === 'faild') {
 
-                            var errors = res.errors; // Assuming res is an object with errors property
-
-                                    // Clear previous errors
-                                    $(".error").removeClass("invalid-feedback").html('');
-                                    $("input[type='text'], select, input[type='number']").removeClass('is-invalid');
-                                    // Loop through errors and display them
-                                    $.each(errors, function(key, val) {
-                                        $("#" + key).addClass('is-invalid').siblings('p').addClass("invalid-feedback").html(val);
-                                    });
+                            var errors = res
+                                .errors; // Assuming res is an object with errors property
+                            // Clear previous errors
+                            $(".error").removeClass("invalid-feedback").html('');
+                            $("input[type='text'], select, input[type='number']").removeClass(
+                                'is-invalid');
+                            // Loop through errors and display them
+                            $.each(errors, function(key, val) {
+                                $("#" + key).addClass('is-invalid').siblings('p')
+                                    .addClass("invalid-feedback").html(val);
+                            });
 
 
 
                         } else {
                             // Handle success case
-                            // window.location.href = "{{ route('subcategory.index') }}";
+                            window.location.href = "{{ route('product.index') }}";
                         }
                     },
                     error: function() {
@@ -274,10 +279,8 @@
                     },
                     dataType: 'json',
                     success: function(res) {
-                        /*
-                            explain
+                        /*   explain
                            $("#sub_category").find("option").not(":first").remove();
-
                                 এই লাইনে আমরা প্রথম বাছাইকৃত অপশন ছাড়াই সব অন্যান্য অপশনগুলি অপসারণ করছি।
                                 এটি সাবক্যাটেগরির ড্রপডাউনের অন্যান্য অপশনগুলি রিফ্রেশ করার জন্য ব্যবহৃত হয়।
                                   $.each(res["subcategories"],function(key , val){
@@ -290,10 +293,11 @@
                                  প্রতিটি অপশনের মান সাবক্যাটেগরির নাম ব্যবহার করে সেট করা হচ্ছে। অপশনগুলি যুক্ত করার জন্য, append() ব্যবহৃত হয়।
 
                            */
-                           $("#sub_category_id").find("option").not(":first").remove();
-                            $.each(res["subcategories"], function(key, val) {
-                                $("#sub_category_id").append(`<option value='${val.id}'>${val.name}</option>`);
-                            });
+                        $("#sub_category_id").find("option").not(":first").remove();
+                        $.each(res["subcategories"], function(key, val) {
+                            $("#sub_category_id").append(
+                                `<option value='${val.id}'>${val.name}</option>`);
+                        });
 
                     },
                     error: function() {
@@ -302,6 +306,52 @@
                 });
             });
             // end
+
+
+
+
+            Dropzone.autoDiscover = false;
+        const dropzone = new Dropzone("#image", {
+            url: "{{ route('temp-images.create') }}",
+            maxFiles: 10,
+            paramName: 'image',
+            addRemoveLinks: true,
+            acceptedFiles: "image/jpeg,image/png,image/gif",
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(file, response) {
+                // $("#image_id").val(response.image_id);
+                //console.log(response)
+
+                var html = `<div class="col-md-3 id="img-row-${response.image_id}"> <div class="card">
+                    <input type="hidden" name="imageArray[]" value="${response.image_id}">
+
+                    <img src="${response.imgpath}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <a href="javascript:void(0)" onclick="deleteimg(${response.image_id})" class="btn btn-secondary">Delete</a>
+                    </div>
+                    </div></div>`;
+                $("#product_gallery").append(html)
+            }
+            // complete:function(file){
+            //   this.removeFile(file);
+            // }
+
+
+
         });
+        function deleteimg(id){
+            $("#img-row-"+id).remove();
+        }
+        });
+
+
+
+
+
+
+
+
     </script>
 @endsection
