@@ -7,7 +7,7 @@
                     <h1>Create Product</h1>
                 </div>
                 <div class="col-sm-6 text-right">
-                    <a href="products.html" class="btn btn-primary">Back</a>
+                    <a href="{{route('product.index')}}" class="btn btn-primary">Back</a>
                 </div>
             </div>
         </div>
@@ -279,7 +279,7 @@
                     },
                     dataType: 'json',
                     success: function(res) {
-                        /*   explain
+                          /*   explain
                            $("#sub_category").find("option").not(":first").remove();
                                 এই লাইনে আমরা প্রথম বাছাইকৃত অপশন ছাড়াই সব অন্যান্য অপশনগুলি অপসারণ করছি।
                                 এটি সাবক্যাটেগরির ড্রপডাউনের অন্যান্য অপশনগুলি রিফ্রেশ করার জন্য ব্যবহৃত হয়।

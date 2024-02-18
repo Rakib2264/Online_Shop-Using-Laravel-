@@ -14,8 +14,15 @@ use Illuminate\Support\Facades\Validator;
 use Image;
 class ProductController extends Controller
 {
-    public function index(){
-        
+    public function index(Request $request){
+         $products = Product::latest('id')->with('productmages');
+
+         if ($request->get('keyword') != "") {
+           $products = $products->where('title','like','%'.$request->get('keyword').'%');
+         }
+         $products=$products->paginate(5);
+        //  dd($products);
+         return view('admin.product.list',compact('products'));
     }
     public function create()
     {

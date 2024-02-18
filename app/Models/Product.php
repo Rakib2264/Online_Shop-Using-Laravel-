@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     use HasFactory;
+    public function productmages(){
+        return $this->hasMany(ProductImages::class,'products_id','id');
+    }
 }

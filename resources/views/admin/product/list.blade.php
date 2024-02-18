@@ -1,14 +1,13 @@
 @extends('admin.layouts.master')
 @section('admin_content')
-
     <section class="content-header">
         <div class="container-fluid my-2">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Categories</h1>
+                    <h1>Products</h1>
                 </div>
                 <div class="col-sm-6 text-right">
-                    <a href="{{ route('category.create') }}" class="btn btn-primary">New Category</a>
+                    <a href="{{route('product.create')}}" class="btn btn-primary">New Product</a>
                 </div>
             </div>
         </div>
@@ -23,7 +22,7 @@
                 <form action="" method="get">
                     <div class="card-header">
                         <div class="card-title">
-                            <button type="button" onclick="window.location.href='{{ route('category.index') }}'"
+                            <button type="button" onclick="window.location.href='{{ route('product.index') }}'"
                                 class="btn btn-default btn-sm">Reset</button>
                         </div>
 
@@ -47,21 +46,34 @@
                         <thead>
                             <tr>
                                 <th width="60">ID</th>
-                                <th>Name</th>
-                                <th>Slug</th>
+                                <th width="80"></th>
+                                <th>Product</th>
+                                <th>Price</th>
+                                <th>Qty</th>
+                                <th>SKU</th>
                                 <th width="100">Status</th>
                                 <th width="100">Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @if ($categories->isNotEmpty())
-                                @foreach ($categories as $category)
+                            @if ($products->isNotEmpty())
+                                @foreach ($products as $product)
+                                @php
+                                    $productImg = $product->productmages->first();
+                                @endphp
                                     <tr>
-                                        <td>{{ $category->id }}</td>
-                                        <td>{{ $category->name }}</td>
-                                        <td>{{ $category->slug }}</td>
+                                        <td>{{ $product->id }}</td>
+                                        @if (!empty($productImg->image))
+                                        <td><img src="{{ asset('product/small/'. $productImg->image) }}" class="img-thumbnail" width="50"></td>
+                                         @else
+                                         <img src="{{asset('admin-assets/img/default-150x150.png')}}" class="img-thumbnail" width="50" alt=""/>
+                                        @endif
+                                         <td><a href="#" >{{ $product->title }}</a></td>
+                                        <td>${{ $product->price }}</td>
+                                        <td>{{ $product->qty }} left in Stock</td>
+                                        <td>{{ $product->sku }}</td>
                                         <td>
-                                            @if ($category->status == 1)
+                                            @if ($product->status == 1)
                                                 <svg class="text-success-500 h-6 w-6 text-success"
                                                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                     stroke-width="2" stroke="currentColor" aria-hidden="true">
@@ -80,7 +92,7 @@
 
                                         </td>
                                         <td>
-                                            <a href="{{ route('category.edit', $category->id) }}">
+                                            <a href="#">
                                                 <svg class="filament-link-icon w-4 h-4 mr-1"
                                                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
                                                     fill="currentColor" aria-hidden="true">
@@ -89,8 +101,7 @@
                                                     </path>
                                                 </svg>
                                             </a>
-                                            <a href="#" onclick="deleteCategory({{ $category->id }})"
-                                                class="text-danger w-4 h-4 mr-1">
+                                            <a href="#" class="text-danger w-4 h-4 mr-1">
                                                 <svg wire:loading.remove.delay="" wire:target=""
                                                     class="filament-link-icon w-4 h-4 mr-1"
                                                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
@@ -105,47 +116,19 @@
                                 @endforeach
                             @else
                                 <tr>
-                                    <td colspan="5">Data Not Found</td>
+                                    <td colspan="7">
+                                        Product Not Avlaable
+                                    </td>
                                 </tr>
                             @endif
                         </tbody>
                     </table>
                 </div>
                 <div class="card-footer clearfix">
-                    {{ $categories->links() }}
-                </div>
+                       {{$products->links()}}
+                 </div>
             </div>
         </div>
         <!-- /.card -->
     </section>
-@endsection
-@section('customJs')
-    <script>
-        function deleteCategory(id) {
-
-            var url = '{{ route('category.delete', 'ID') }}'
-            var newUrl = url.replace("ID", id)
-
-
-            if (confirm("Are You Sure You Want To Delete This Category")) {
-                $.ajax({
-                    url: newUrl,
-                    type: 'DELETE',
-                    dataType: 'json',
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function(res) {
-                        // Redirect to the category index page upon successful deletion
-                        window.location.href = "{{ route('category.index') }}";
-                    },
-                    error: function(xhr, status, error) {
-                        // Handle error, if any
-                        console.error(xhr.responseText);
-                    }
-                });
-            }
-
-        }
-    </script>
 @endsection
