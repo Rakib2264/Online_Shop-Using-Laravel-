@@ -23,7 +23,7 @@ class ImagesController extends Controller
             // Generate thumbnail
             $sourcepath = public_path('category/') . $newName;
             $savepath = public_path('category/thumb/') . $newName;
-            $image = Image::make($sourcepath);
+            $image = 'Image'::make($sourcepath);
             $image->fit(300, 275)->save($savepath);
 
             // Save image details to the database

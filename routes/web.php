@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Admin\ImagesController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ProductImageController;
 use App\Http\Controllers\Admin\ProductSubCategoryController;
 use App\Http\Controllers\Admin\SubCategory;
 use App\Http\Controllers\Admin\SubCategoryController;
@@ -69,8 +70,9 @@ Route::group(['prefix'=>'admin'],function(){
         Route::get('/product/create',[ProductController::class,'create'])->name('product.create');
         Route::post('/product/store',[ProductController::class,'store'])->name('product.store');
         Route::get('/product/',[ProductController::class,'index'])->name('product.index');
-
-
+        Route::get('/product/edit/{id}',[ProductController::class,'edit'])->name('product.edit');
+        Route::put('/product/update/{id}',[ProductController::class,'update'])->name('product.update');
+         Route::delete('/product/{id}/delete',[ProductController::class,'destroy'])->name('product.delete');
 
 
         //if categoey select then subcategory i mean category wize subcategoey show
