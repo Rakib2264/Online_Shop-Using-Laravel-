@@ -36,6 +36,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('frontend') }}/css/slick.css" />
     <link rel="stylesheet" type="text/css" href="{{ asset('frontend') }}/css/slick-theme.css" />
     <link rel="stylesheet" type="text/css" href="{{ asset('frontend') }}/css/video-js.css" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('frontend') }}/css/ion.rangeSlider.min.css" />
     <link rel="stylesheet" type="text/css" href="{{ asset('frontend') }}/css/style.css?v=<?php echo rand(111, 999); ?>" />
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
@@ -184,6 +185,7 @@
     <script src="{{ asset('frontend') }}/js/lazyload.17.6.0.min.js"></script>
     <script src="{{ asset('frontend') }}/js/slick.min.js"></script>
     <script src="{{ asset('frontend') }}/js/custom.js"></script>
+    <script src="{{ asset('frontend') }}/js/ion.rangeSlider.min.js"></script>
     <script>
         window.onscroll = function() {
             myFunction()
@@ -200,6 +202,7 @@
             }
         }
     </script>
+    @yield('customjs')
 </body>
 
 </html>

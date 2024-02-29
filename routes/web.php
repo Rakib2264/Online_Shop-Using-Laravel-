@@ -30,7 +30,7 @@ use Illuminate\Support\Str;
 
 // for frontend
 Route::get('/',[FrontController::class,'index'])->name('frontend.home');
-Route::get('/shop',[ShopController::class,'index'])->name('frontend.shop');
+Route::get('/shop/{categoryslug?}/{subcategoryslug?}',[ShopController::class,'index'])->name('frontend.shop');
 // for backend
 Route::group(['prefix' => 'admin'], function () {
 
