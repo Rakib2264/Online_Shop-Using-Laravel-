@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\ProductSubCategoryController;
 use App\Http\Controllers\Admin\SubCategory;
 use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\FrontController;
+use App\Http\Controllers\ShopController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -29,6 +30,7 @@ use Illuminate\Support\Str;
 
 // for frontend
 Route::get('/',[FrontController::class,'index'])->name('frontend.home');
+Route::get('/shop',[ShopController::class,'index'])->name('frontend.shop');
 // for backend
 Route::group(['prefix' => 'admin'], function () {
 
