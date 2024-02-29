@@ -19,21 +19,21 @@
         <div class="container-fluid">
             <div class="card">
                 <div class="card-body">
-                    <form id="categoryForm" method="POST">
+                    <form action="" id="categoryupdateForm" name="categoryupdateForm">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="name" class="form-label">Name:</label>
-                                    <input type="text" value="{{$category->name}}" name="name" id="name" class="form-control"
-                                        placeholder="Enter brand name">
+                                    <input type="text" value="{{ $category->name }}" name="name" id="name"
+                                        class="form-control" placeholder="Enter brand name">
                                     <p class="p"></p>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="slug" class="form-label">Slug:</label>
-                                    <input type="text" readonly value="{{$category->slug}}" name="slug" id="slug" class="form-control"
-                                        placeholder="Enter slug">
+                                    <input type="text" readonly value="{{ $category->slug }}" name="slug"
+                                        id="slug" class="form-control" placeholder="Enter slug">
                                     <p></p>
                                 </div>
                             </div>
@@ -49,13 +49,13 @@
                                     </div>
                                 </div>
 
-                                    @if (!empty($category->image))
-                                     <div>
-                                        <img src="{{asset('up/cat/'.$category->image)}}" height="100" width="100" class=" img-thumbnail " alt="">
-                                     </div>
-                                    @else
-
-                                    @endif
+                                @if (!empty($category->image))
+                                    <div>
+                                        <img src="{{ asset('up/cat/' . $category->image) }}" height="100" width="100"
+                                            class=" img-thumbnail " alt="">
+                                    </div>
+                                @else
+                                @endif
 
 
                             </div>
@@ -64,8 +64,21 @@
                                     <label for="status" class="form-label">Status:</label>
                                     <select name="status" id="status" class="form-control">
                                         <option selected disabled>Select Status</option>
-                                        <option value="1" {{($category->status == 1) ? 'selected' : ''}}>Active</option>
-                                        <option value="0" {{($category->status == 0) ? 'selected' : ''}}>Inactive</option>
+                                        <option value="1" {{ $category->status == 1 ? 'selected' : '' }}>Active
+                                        </option>
+                                        <option value="0" {{ $category->status == 0 ? 'selected' : '' }}>Inactive
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="showHome" class="form-label">Show On Home</label>
+                                    <select name="showHome" id="showHome" class="form-control">
+                                        <option value="Yes" {{ $category->showHome == 'Yes' ? 'selected' : '' }}>Yes
+                                        </option>
+                                        <option value="No" {{ $category->showHome == 'No' ? 'selected' : '' }}>No
+                                        </option>
                                     </select>
                                 </div>
                             </div>
@@ -81,17 +94,20 @@
 @endsection
 @section('customJs')
     <script>
-        $('#categoryForm').submit(function(e) {
+        $('#categoryupdateForm').submit(function(e) {
             e.preventDefault();
             var formData = $(this);
             $("button[type=submit]").prop('disabled', true);
             //    console.log(formData.serializeArray());
             //    return false;
             $.ajax({
-                url: '{{ route('category.update',$category->id) }}',
+                url: '{{ route('category.update', $category->id) }}',
                 type: 'put',
                 dataType: 'json',
                 data: formData.serializeArray(),
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
                 success: function(res) {
                     $("button[type=submit]").prop('disabled', false);
 

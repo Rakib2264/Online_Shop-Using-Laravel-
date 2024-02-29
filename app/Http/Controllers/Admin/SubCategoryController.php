@@ -48,6 +48,7 @@ class SubCategoryController extends Controller
             $sucategory->slug = $request->slug;
             $sucategory->category_id = $request->category;
             $sucategory->status = $request->status;
+            $sucategory->showHome = $request->showHome;
             $sucategory->save();
             session()->flash('success','Sub-Category Added Successfully');
             return response()->json([
@@ -98,6 +99,7 @@ class SubCategoryController extends Controller
         $sucategory->slug = $request->slug;
         $sucategory->category_id = $request->category;
         $sucategory->status = $request->status;
+        $sucategory->showHome = $request->showHome;
         $sucategory->save();
 
         session()->flash('success', 'Sub-Category Updated Successfully');

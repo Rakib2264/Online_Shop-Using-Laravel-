@@ -60,6 +60,15 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="showHome" class="form-label">Show On Home</label>
+                                    <select name="showHome" id="showHome" class="form-control">
+                                         <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                         <div class="pb-5 pt-3">
                             <button type="submit" class="btn btn-primary">Create</button>
@@ -83,6 +92,9 @@
                 type: 'post',
                 dataType: 'json',
                 data: formData.serializeArray(),
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
                 success: function(res) {
                     $("button[type=submit]").prop('disabled',false);
 

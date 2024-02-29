@@ -213,13 +213,13 @@ class ProductController extends Controller
                         // Resize and save the image in large size
                         $sourcepath = public_path('category/') . $imageinfo->name;
                         $dpath_large = public_path('product/large/') . $imageName;
-                        Image::make($sourcepath)->resize(1400, null, function ($constraint) {
+                        'Image'::make($sourcepath)->resize(1400, null, function ($constraint) {
                             $constraint->aspectRatio();
                         })->save($dpath_large);
 
                         // Resize and save the image in small size
                         $dpath_small = public_path('product/small/') . $imageName;
-                        Image::make($sourcepath)->fit(300, 280)->save($dpath_small);
+                        'Image'::make($sourcepath)->fit(300, 280)->save($dpath_small);
                     }
                 }
             }

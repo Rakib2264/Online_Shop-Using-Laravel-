@@ -44,6 +44,7 @@ class CategoryController extends Controller
     $category->name = $request->name;
     $category->slug = $request->slug;
     $category->status = $request->status;
+    $category->showHome = $request->showHome;
     $category->save();
 
     if (!empty($request->image_id)) {
@@ -54,7 +55,6 @@ class CategoryController extends Controller
             $newImageName = $category->id . '.' . $ext;
             $sourcePath = public_path('category') . '/' . $catimage->name;
             $destinationPath = public_path('up/cat') . '/' . $newImageName;
-
             if (file_exists($sourcePath)) {
                 copy($sourcePath, $destinationPath);
                 $category->image = $newImageName;
@@ -93,7 +93,7 @@ class CategoryController extends Controller
 
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'slug' => 'required|unique:categories,slug',
+            'slug' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -106,24 +106,10 @@ class CategoryController extends Controller
          $category->name = $request->name;
         $category->slug = $request->slug;
         $category->status = $request->status;
-        $category->update();
+        $category->showHome = $request->showHome;
+        $category->save();
 
-        // if (!empty($request->image_id)) {
-        //     $catimage = Catimage::find($request->image_id);
 
-        //     if ($catimage) {
-        //         $ext = pathinfo($catimage->name, PATHINFO_EXTENSION);
-        //         $newImageName = $category->id . '.' . $ext;
-        //         $sourcePath = public_path('category') . '/' . $catimage->name;
-        //         $destinationPath = public_path('up/cat') . '/' . $newImageName;
-
-        //         if (file_exists($sourcePath)) {
-        //             copy($sourcePath, $destinationPath);
-        //             $category->image = $newImageName;
-        //             $category->save();
-        //         }
-        //     }
-        // }
 
         session()->flash('success', 'Category Updated Successfully');
         return response()->json([

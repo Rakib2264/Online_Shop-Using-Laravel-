@@ -55,6 +55,7 @@
                                             <p></p>
                                         </div>
                                     </div>
+
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="slug">Slug</label>
@@ -62,7 +63,18 @@
                                                 class="form-control" placeholder="Slug">
                                                 <p></p>
                                         </div>
+                                    </div>
 
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="showHome" class="form-label">Show On Home</label>
+                                            <select name="showHome" id="showHome" class="form-control">
+                                                <option value="Yes">Yes
+                                                </option>
+                                                <option value="No">No
+                                                </option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="text-center">
