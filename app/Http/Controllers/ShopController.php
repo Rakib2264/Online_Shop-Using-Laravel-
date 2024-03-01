@@ -16,13 +16,6 @@ class ShopController extends Controller
         $categorySelected = '';
         $subcategorySelected = '';
         $brandsArray = [];
-
-        // Check if 'brand' parameter is present in the request
-        if (!empty($request->get('brand'))) {
-            // If present, split the brands by comma and store in $brandsArray
-            $brandsArray = explode(',', $request->get('brand'));
-        }
-
         // Retrieve all categories with their subcategories
         $categories = Category::orderBy('name', 'asc')->with('sub_category')->where('status', 1)->get();
         // Retrieve all brands
@@ -36,28 +29,26 @@ class ShopController extends Controller
             $products = $products->where('category_id', $category->id);
             $categorySelected = $category->id;
         }
-
         // Apply filters based on subcategory
         if (!empty($subcategorySlug)) {
             $subcategory = SubCategory::where('slug', $subcategorySlug)->first();
             $products = $products->where('sub_category_id', $subcategory->id);
             $subcategorySelected = $subcategory->id;
         }
-
         // Apply filters based on brands
         if (!empty($request->get('brand'))) {
             $brandsArray = explode(',', $request->get('brand'));
             $products = $products->whereIn('brand_id', $brandsArray);
         }
-
         // Apply filters based on price range
         if ($request->get('price_max') != '' && $request->get('price_min') != '') {
             if ($request->get('price_max') == 1000) {
                 // If max price is set to 1000, include all prices above the min price
                 $products = $products->whereBetween('price', [intval($request->get('price_min')), 100000]);
+            }else{
+                $products = $products->whereBetween('price', [intval($request->get('price_min')), intval($request->get('price_max'))]);
             }
         }
-
         // Get the price range values
         $pricemax = (intval($request->get('price_max')) == 0) ? 1000 : $request->get('price_max');
         $pricemin = intval($request->get('price_min'));
@@ -78,14 +69,25 @@ class ShopController extends Controller
             // If no sorting preference is provided, default to sorting by price descending
             $products = $products->orderBy('price', 'desc');
         }
-
         // Get the sort value
         $sort = $request->get('sort');
 
         // Retrieve the final list of products after applying all filters and sorting
-        $products = $products->get();
+        $products = $products->paginate(8);
 
         // Pass all necessary data to the view
         return view('frontend.shop', compact('categories', 'brands', 'products', 'categorySelected', 'subcategorySelected', 'brandsArray', 'pricemin', 'pricemax', 'sort'));
+    }
+
+    public function product_detail($slug){
+
+        $product = Product::where('slug',$slug)->with('productmages')->first();
+
+        if ($product == null) {
+             abort(404);
+        }
+
+        return view('frontend.product_detail',compact('product'));
+
     }
 }

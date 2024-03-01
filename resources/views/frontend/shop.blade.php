@@ -149,20 +149,7 @@
                                 @endforeach
                             @endif
                             <div class="col-md-12 pt-5">
-                                <nav aria-label="Page navigation example">
-                                    <ul class="pagination justify-content-end">
-                                        <li class="page-item disabled">
-                                            <a class="page-link" href="#" tabindex="-1"
-                                                aria-disabled="true">Previous</a>
-                                        </li>
-                                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="#">Next</a>
-                                        </li>
-                                    </ul>
-                                </nav>
+                                {{ $products->links() }}
                             </div>
                         </div>
                     </div>
@@ -180,7 +167,7 @@
                 min: 0,
                 max: 1000,
                 from: {{ $pricemin }}, // Set the initial minimum price
-                step: 10,
+                step: 5,
                 to: {{ $pricemax }}, // Set the initial maximum price
                 skin: "round",
                 max_postfix: "+",

@@ -41,42 +41,28 @@
                                     </div>
                                     <div class="col-md-12">
                                         <div class="mb-3">
+                                            <label for="short_description">Short Description</label>
+                                            <textarea name="short_description" id="short_description" cols="30" rows="10" class="summernote"
+                                                >{{ $product->short_description }}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="mb-3">
                                             <label for="description">Description</label>
                                             <textarea name="description" id="description" cols="30" rows="10" class="summernote"
                                                 placeholder="Description">{{ $product->description }}</textarea>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <h2 class="h4 mb-3">Media</h2>
-                                <div id="image" class="dropzone dz-clickable">
-                                    <div class="dz-message needsclick">
-                                        <br>Drop files here or click to upload.<br><br>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row" id="product_gallery">
-                            @if ($productimg->isNotEmpty())
-                                @foreach ($productimg as $product)
-                                    <div class="col-md-3" id="img-row-{{ $product->id }}">
-                                        <div class="card">
-                                            <input type="hidden" name="image[]" value="{{ $product->id }}">
-                                            <img src="{{ asset('product/small/' . $product->image) }}" height="100" width="100" class="card-img-top" alt="...">
-                                            <div class="card-body">
-                                                <a href="javascript:void(0)" onclick="deleteimg({{ $product->id }})" class="btn btn-secondary">Delete</a>
-                                            </div>
+                                    <div class="col-md-12">
+                                        <div class="mb-3">
+                                            <label for="shipping_returns">Shipping and Returns</label>
+                                            <textarea name="shipping_returns" id="shipping_returns" cols="30" rows="10" class="summernote"
+                                                placeholder="Description">{{ $product->shipping_returns }}</textarea>
                                         </div>
                                     </div>
-                                @endforeach
-                            @endif
+                                </div>
+                            </div>
                         </div>
-
-
-
                         <div class="card mb-3">
                             <div class="card-body">
                                 <h2 class="h4 mb-3">Pricing</h2>

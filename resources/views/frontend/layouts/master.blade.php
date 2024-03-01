@@ -106,12 +106,10 @@
                                         <ul class="dropdown-menu dropdown-menu-dark">
                                             @foreach ($categiry->sub_category as $sub_category)
                                                 <li><a class="dropdown-item nav-link"
-                                                        href="">{{ $sub_category->name }}</a></li>
+                                                        href="{{route('frontend.shop',[$categiry->slug,$sub_category->slug])}}">{{ $sub_category->name }}</a></li>
                                             @endforeach
                                         </ul>
                                     @endif
-
-
                                 </li>
                             @endforeach
                         @endif
@@ -125,7 +123,6 @@
             </nav>
         </div>
     </header>
-
     <main>
         @yield('frontend_content')
     </main>
@@ -172,7 +169,7 @@
                 <div class="row">
                     <div class="col-12 mt-3">
                         <div class="copy-right text-center">
-                            <p>© Copyright {{date('Y')}} Amazing Shop. All Rights Reserved</p>
+                            <p>© Copyright {{ date('Y') }} Amazing Shop. All Rights Reserved</p>
                         </div>
                     </div>
                 </div>
