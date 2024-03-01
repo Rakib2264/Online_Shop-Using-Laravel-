@@ -98,9 +98,13 @@
                                 <div class="d-flex align-items-center justify-content-end mb-4">
                                     <div class="ml-2">
                                         <select name="sort" id="sort" class="form-select">
-                                            <option value="latest" {{($sort == 'latest')? 'selected':''}}>Latest</option>
-                                            <option value="price_dec" {{($sort == 'price_dec')? 'selected':''}}>Price High</option>
-                                            <option value="price_asc" {{($sort == 'price_asc')? 'selected':''}}>Price Low</option>
+                                            <option value="latest" {{ $sort == 'latest' ? 'selected' : '' }}>Latest
+                                            </option>
+                                            <option value="price_dec" {{ $sort == 'price_dec' ? 'selected' : '' }}>Price
+                                                High</option>
+                                            <option value="price_asc" {{ $sort == 'price_asc' ? 'selected' : '' }}>Price
+                                                Low
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
@@ -170,36 +174,43 @@
 @section('customjs')
     <script>
         $(document).ready(function() {
-
+            // Initialize the ionRangeSlider for price range selection
             $(".js-range-slider").ionRangeSlider({
                 type: "double",
                 min: 0,
                 max: 1000,
-                from: {{ $pricemin }},
+                from: {{ $pricemin }}, // Set the initial minimum price
                 step: 10,
-                to: {{ $pricemax }},
+                to: {{ $pricemax }}, // Set the initial maximum price
                 skin: "round",
                 max_postfix: "+",
                 prefix: "$",
                 onFinish: function() {
+                    // When the range selection is finished, call the apply_filters function
                     apply_filters();
                 }
             });
+
+            // Get the ionRangeSlider instance
             var slider = $(".js-range-slider").data('ionRangeSlider');
 
-
+            // Event listener for changes in brand selection
             $('.brand-label').change(function() {
+                // When brand selection changes, call the apply_filters function
                 apply_filters();
             });
 
+            // Event listener for changes in sorting selection
             $("#sort").change(function() {
+                // When sorting selection changes, call the apply_filters function
                 apply_filters();
-            })
+            });
 
-            // Define the function apply_filters()
+            // Define the apply_filters function
             function apply_filters() {
                 // Initialize an empty array to store selected brands
                 var brands = [];
+
                 // Iterate over each element with the class 'brand-label'
                 $(".brand-label").each(function() {
                     // Check if the current element is checked
@@ -208,14 +219,22 @@
                         brands.push($(this).val());
                     }
                 });
+
+                // Construct the URL for filtering and sorting
                 var url = '{{ url()->current() }}?';
+
+                // Append the selected price range to the URL
                 url += '&price_min=' + slider.result.from + '&price_max=' + slider.result.to;
-                //brand filter
+
+                // Append the selected brands to the URL
                 if (brands.length > 0) {
-                    url += '&brand=' + brands.toString()
+                    url += '&brand=' + brands.toString();
                 }
-                // price range filter
-                url += '&sort='+$("#sort").val()
+
+                // Append the selected sorting option to the URL
+                url += '&sort=' + $("#sort").val();
+
+                // Redirect to the constructed URL
                 window.location.href = url;
             }
         });
