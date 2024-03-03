@@ -87,7 +87,13 @@ class ShopController extends Controller
              abort(404);
         }
 
-        return view('frontend.product_detail',compact('product'));
+        $relatedProducts = [];
+        if ($product->related_products != '') {
+            $productArray = explode(',', $product->related_products);
+            $relatedProducts = Product::whereIn('id', $productArray)->get();
+        }
+
+        return view('frontend.product_detail',compact('product','relatedProducts'));
 
     }
 }

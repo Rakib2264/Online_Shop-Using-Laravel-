@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AddToCartController;
 use App\Http\Controllers\Admin\AdminLoginController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController;
@@ -29,9 +30,15 @@ use Illuminate\Support\Str;
 
 
 // for frontend
-Route::get('/',[FrontController::class,'index'])->name('frontend.home');
-Route::get('/shop/{categoryslug?}/{subcategoryslug?}',[ShopController::class,'index'])->name('frontend.shop');
-Route::get('/produc_detail/{slug}',[ShopController::class,'product_detail'])->name('frontend.product_detail');
+Route::get('/', [FrontController::class, 'index'])->name('frontend.home');
+Route::get('/shop/{categoryslug?}/{subcategoryslug?}', [ShopController::class, 'index'])->name('frontend.shop');
+Route::get('/produc_detail/{slug}', [ShopController::class, 'product_detail'])->name('frontend.product_detail');
+// cart
+Route::get('/cart', [AddToCartController::class, 'cart'])->name('frontend.cart');
+Route::post('/add-to-cart', [AddToCartController::class, 'addToCart'])->name('frontend.addToCart');
+Route::post('/add-to-cart/update', [AddToCartController::class, 'updatecart'])->name('frontend.updatecart');
+Route::delete('/add-to-cart/delete', [AddToCartController::class, 'delete'])->name('frontend.delete');
+
 // for backend
 Route::group(['prefix' => 'admin'], function () {
 
@@ -64,7 +71,7 @@ Route::group(['prefix' => 'admin'], function () {
         //Brands route
         Route::get('/brand/create', [BrandController::class, 'create'])->name('brand.create');
         Route::post('/brand/store', [BrandController::class, 'store'])->name('brand.store');
-        Route::get('/brand/', [BrandController::class, 'index'])->name('brand.index');
+        Route::get('/brand', [BrandController::class, 'index'])->name('brand.index');
         Route::get('/brand/{id}/edit', [BrandController::class, 'edit'])->name('brand.edit');
         Route::put('/brand/{id}/update', [BrandController::class, 'update'])->name('brand.update');
         Route::delete('/brand/{id}/delete', [BrandController::class, 'destroy'])->name('brand.delete');
@@ -72,10 +79,11 @@ Route::group(['prefix' => 'admin'], function () {
         // Product
         Route::get('/product/create', [ProductController::class, 'create'])->name('product.create');
         Route::post('/product/store', [ProductController::class, 'store'])->name('product.store');
-        Route::get('/product/', [ProductController::class, 'index'])->name('product.index');
+        Route::get('/product', [ProductController::class, 'index'])->name('product.index');
         Route::get('/product/edit/{id}', [ProductController::class, 'edit'])->name('product.edit');
         Route::put('/product/update/{id}', [ProductController::class, 'update'])->name('product.update');
         Route::delete('/product/{id}/delete', [ProductController::class, 'destroy'])->name('product.delete');
+        Route::get('/getProducts', [ProductController::class,'getProducts'])->name('product.getProducts');
 
 
         //if categoey select then subcategory i mean category wize subcategoey show
@@ -83,7 +91,6 @@ Route::group(['prefix' => 'admin'], function () {
 
 
         // slug
-
         Route::get('/getSlug', function (Request $request) {
             $slug = '';
             if (!empty($request->title)) {

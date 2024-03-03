@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="{{ asset('admin') }}/plugins/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('admin/plugins/dropzone/min/dropzone.min.css') }}">
     <link rel="stylesheet" href="{{ asset('admin') }}/plugins/summernote/summernote-bs4.min.css">
+    <link rel="stylesheet" href="{{ asset('admin') }}/plugins/select2/css/select2.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('admin') }}/css/adminlte.min.css">
     <link rel="stylesheet" href="{{ asset('admin') }}/css/custom.css">
@@ -91,6 +92,7 @@
     <script src="{{ asset('admin') }}/js/demo.js"></script>
     <script src="{{ asset('admin') }}/plugins/dropzone/dropzone.js"></script>
     <script src="{{ asset('admin') }}/plugins/summernote/summernote-bs4.min.js"></script>
+    <script src="{{ asset('admin') }}/plugins/select2/js/select2.min.js"></script>
     @yield('customJs')
 
     <script>

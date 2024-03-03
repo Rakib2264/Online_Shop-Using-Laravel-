@@ -124,6 +124,24 @@
                                                 name="qty" id="qty" class="form-control" placeholder="Qty">
                                             <p class="error"></p>
                                         </div>
+                                        <div class="col-md-12">
+                                            <div class="mb-3">
+                                                <h2 class="h4 mb-3">Related product</h2>
+                                                <div class="mb-3">
+                                                    <select multiple class="related_product w-100" name="related_products[]" id="related_products">
+                                                      @if (!empty($relatedProducts))
+
+                                                         @foreach ($relatedProducts as $relatedproduct)
+                                                            <option selected value="{{$relatedproduct->id}}">{{$relatedproduct->title}}</option>
+                                                         @endforeach
+
+                                                      @endif
+                                                    </select>
+
+
+                                                 </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -205,6 +223,7 @@
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
 
@@ -219,7 +238,25 @@
 
 @section('customJs')
     <script>
+
+        $('.related_product').select2({
+            ajax: {
+                url: '{{ route('product.getProducts') }}',
+                dataType: 'json',
+                tags: true,
+                multiple: true,
+                minimumInputLength: 3,
+                processResults: function (data) {
+                    return {
+                        results: data.tags
+                    };
+                }
+            }
+        });
+
         $(document).ready(function() {
+
+
 
             $.ajaxSetup({
                 headers: {

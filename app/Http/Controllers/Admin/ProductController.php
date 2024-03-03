@@ -78,6 +78,8 @@ class ProductController extends Controller
             $product->track_qty = $request->track_qty;
             $product->qty = $request->qty;
             $product->status = $request->status;
+            $product->related_products = (!empty($request->related_products)) ? implode(',',$request->related_products) : '';
+
 
             // Save the product
             $product->save();
@@ -141,7 +143,14 @@ class ProductController extends Controller
          $subCategory = SubCategory::where('category_id', $product->category_id)->get();
         $categories = Category::orderBy('name', "DESC")->get();
         $brands = Brand::orderBy('name', "DESC")->get();
-        return view('admin.product.edit', compact('categories', 'brands', 'product', 'subCategory', 'productimg'));
+
+        $relatedProducts = [];
+        if ($product->related_products != '') {
+            $productArray = explode(',', $product->related_products);
+            $relatedProducts = Product::whereIn('id', $productArray)->get();
+        }
+
+        return view('admin.product.edit', compact('categories', 'brands', 'product', 'subCategory', 'productimg','relatedProducts'));
     }
 
     public function update(Request $request, $id)
@@ -190,6 +199,7 @@ class ProductController extends Controller
             $product->track_qty = $request->track_qty;
             $product->qty = $request->qty;
             $product->status = $request->status;
+            $product->related_products = (!empty($request->related_products)) ? implode(',',$request->related_products) : '';
 
             // Save the product
             $product->save();
@@ -266,5 +276,26 @@ class ProductController extends Controller
             'status' => true,
             'msg' => 'Product Deleted',
         ]);
+    }
+
+    public function getProducts(Request $request){
+
+        $tempProduct = [];
+
+        if($request->term != ""){
+
+            $products = Product::where('title','like','%'.$request->term.'%')->get();
+            if($products != null){
+                foreach ($products as $product) {
+                   $tempProduct[] = array('id'=>$product->id, 'text'=>$product->title);
+                }
+            }
+
+        }
+        return response()->json([
+            'tags'=>$tempProduct,
+            'status'=>true
+        ]);
+
     }
 }

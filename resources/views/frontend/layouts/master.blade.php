@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title><?php echo !empty($title) ? 'Title-' . $title : 'Home'; ?></title>
     <meta name="description" content="" />
-    <meta name="viewport"
+     <meta name="viewport"
         content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1, user-scalable=no" />
 
     <meta name="HandheldFriendly" content="True" />
@@ -48,6 +48,8 @@
 
     <!-- Fav Icon -->
     <link rel="shortcut icon" type="image/x-icon" href="#" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
 </head>
 
 <body data-instant-intensity="mousedown">
@@ -56,9 +58,9 @@
         <div class="container">
             <div class="row align-items-center py-3 d-none d-lg-flex justify-content-between">
                 <div class="col-lg-4 logo">
-                    <a href="index.php" class="text-decoration-none">
-                        <span class="h1 text-uppercase text-primary bg-dark px-2">Online</span>
-                        <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">SHOP</span>
+                    <a href="{{route('frontend.home')}}" class="text-decoration-none">
+                        <span class="h1 text-uppercase text-primary bg-dark px-2">Grocary</span>
+                        <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">Store</span>
                     </a>
                 </div>
                 <div class="col-lg-6 col-6 text-left  d-flex justify-content-end align-items-center">
@@ -116,7 +118,7 @@
                     </ul>
                 </div>
                 <div class="right-nav py-0">
-                    <a href="cart.php" class="ml-3 d-flex pt-2">
+                    <a href="{{route('frontend.cart')}}" class="ml-3 d-flex pt-2">
                         <i class="fas fa-shopping-cart text-primary"></i>
                     </a>
                 </div>
@@ -198,7 +200,36 @@
                 navbar.classList.remove("sticky");
             }
         }
-    </script>
+        $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+                      // add to cart
+                      function addToCart(id) {
+                $.ajax({
+                    url: '{{ route('frontend.addToCart') }}',
+                    type: 'post',
+                    data: {
+                        id: id
+                    },
+                    dataType: 'json',
+                    success: function(res) {
+
+                        if (res.status == true) {
+                            window.location.href="{{ route('frontend.cart') }}";
+
+                        }else{
+                            alert(res.msg);
+                        }
+
+                    }
+                });
+            }
+
+        </script>
+
     @yield('customjs')
 </body>
 
