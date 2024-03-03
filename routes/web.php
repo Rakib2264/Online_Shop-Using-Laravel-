@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\ProductImageController;
 use App\Http\Controllers\Admin\ProductSubCategoryController;
 use App\Http\Controllers\Admin\SubCategory;
 use App\Http\Controllers\Admin\SubCategoryController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\ShopController;
 use Illuminate\Support\Facades\Route;
@@ -39,9 +40,29 @@ Route::post('/add-to-cart', [AddToCartController::class, 'addToCart'])->name('fr
 Route::post('/add-to-cart/update', [AddToCartController::class, 'updatecart'])->name('frontend.updatecart');
 Route::delete('/add-to-cart/delete', [AddToCartController::class, 'delete'])->name('frontend.delete');
 
-// for backend
-Route::group(['prefix' => 'admin'], function () {
+// auth user interface
 
+
+
+    Route::group(['prefix' => 'account'], function () {
+        Route::group(['middleware' => 'guest'], function () {
+            Route::get('/login',[AuthController::class,'login'])->name('frontend.login');
+            Route::post('/login/check',[AuthController::class,'authenticate'])->name('frontend.authenticate');
+            Route::get('/register',[AuthController::class,'register'])->name('frontend.register');
+            Route::post('/register/store',[AuthController::class,'processRegister'])->name('frontend.processRegister');
+
+        });
+
+        Route::group(['middleware' => 'auth'], function () {
+
+            Route::get('/profile',[AuthController::class,'profile'])->name('frontend.profile');
+            Route::get('/logout',[AuthController::class,'logout'])->name('frontend.logout');
+
+
+        });
+
+    });
+// for backend
     Route::group(['middleware' => 'admin.guest'], function () {
         Route::get('/login', [AdminLoginController::class, 'index'])->name('admin.login');
         Route::post('/authenticate', [AdminLoginController::class, 'authenticate'])->name('admin.authenticate');
@@ -102,4 +123,4 @@ Route::group(['prefix' => 'admin'], function () {
             ]);
         })->name('getSlug');
     });
-});
+

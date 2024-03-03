@@ -38,6 +38,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('frontend') }}/css/video-js.css" />
     <link rel="stylesheet" type="text/css" href="{{ asset('frontend') }}/css/ion.rangeSlider.min.css" />
     <link rel="stylesheet" type="text/css" href="{{ asset('frontend') }}/css/style.css?v=<?php echo rand(111, 999); ?>" />
+    @yield('frontend-css')
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
