@@ -59,6 +59,11 @@ class AuthController extends Controller
             // Proceed with login logic
             if (Auth::attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
 
+                // if (session()->has('url.intended')) {
+                //     return redirect(session()->get('url.intended'));
+                // }
+
+
                 return redirect()->route('frontend.profile');
             } else {
                 session()->flash('error', 'email/pass is incorrect.');
@@ -80,7 +85,7 @@ class AuthController extends Controller
     }
     public function logout()
     {
-        Auth::logout(); 
+        Auth::logout();
         return redirect()->route('frontend.login')->with('succcess', 'Log Out');
     }
 }

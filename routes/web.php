@@ -39,21 +39,24 @@ Route::get('/cart', [AddToCartController::class, 'cart'])->name('frontend.cart')
 Route::post('/add-to-cart', [AddToCartController::class, 'addToCart'])->name('frontend.addToCart');
 Route::post('/add-to-cart/update', [AddToCartController::class, 'updatecart'])->name('frontend.updatecart');
 Route::delete('/add-to-cart/delete', [AddToCartController::class, 'delete'])->name('frontend.delete');
+Route::get('/checkout', [AddToCartController::class, 'checkout'])->name('frontend.checkout');
+Route::post('/process-Checkout', [AddToCartController::class, 'processCheckout'])->name('frontend.processCheckout');
+Route::get('/thank-you/{orderId}', [AddToCartController::class, 'thanku'])->name('frontend.thanku');
 
-// auth user interface
+       // auth user interface
 
 
 
-    Route::group(['prefix' => 'account'], function () {
+        Route::group(['prefix' => 'account'], function () {
         Route::group(['middleware' => 'guest'], function () {
             Route::get('/login',[AuthController::class,'login'])->name('frontend.login');
             Route::post('/login/check',[AuthController::class,'authenticate'])->name('frontend.authenticate');
             Route::get('/register',[AuthController::class,'register'])->name('frontend.register');
             Route::post('/register/store',[AuthController::class,'processRegister'])->name('frontend.processRegister');
 
-        });
+             });
 
-        Route::group(['middleware' => 'auth'], function () {
+         Route::group(['middleware' => 'auth'], function () {
 
             Route::get('/profile',[AuthController::class,'profile'])->name('frontend.profile');
             Route::get('/logout',[AuthController::class,'logout'])->name('frontend.logout');
@@ -61,14 +64,14 @@ Route::delete('/add-to-cart/delete', [AddToCartController::class, 'delete'])->na
 
         });
 
-    });
-// for backend
-    Route::group(['middleware' => 'admin.guest'], function () {
+          });
+       // for backend
+        Route::group(['middleware' => 'admin.guest'], function () {
         Route::get('/login', [AdminLoginController::class, 'index'])->name('admin.login');
         Route::post('/authenticate', [AdminLoginController::class, 'authenticate'])->name('admin.authenticate');
-    });
+        });
 
-    Route::group(['middleware' => 'admin.auth'], function () {
+        Route::group(['middleware' => 'admin.auth'], function () {
         Route::get('/dashboard', [HomeController::class, 'index'])->name('admin.dashboard');
         Route::get('/logout', [HomeController::class, 'logout'])->name('admin.logout');
 

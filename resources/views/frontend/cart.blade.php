@@ -17,19 +17,19 @@
             <div class="container">
                 <div class="row">
                     @if (Cart::count() > 0)
-                    <div class="col-md-8">
-                        <div class="table-responsive">
-                            <table class="table" id="cart">
-                                <thead>
-                                    <tr>
-                                        <th>Item</th>
-                                        <th>Price</th>
-                                        <th>Quantity</th>
-                                        <th>Total</th>
-                                        <th>Remove</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+                        <div class="col-md-8">
+                            <div class="table-responsive">
+                                <table class="table" id="cart">
+                                    <thead>
+                                        <tr>
+                                            <th>Item</th>
+                                            <th>Price</th>
+                                            <th>Quantity</th>
+                                            <th>Total</th>
+                                            <th>Remove</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
 
                                         @foreach ($cartContent as $cartContent)
                                             <tr>
@@ -69,49 +69,50 @@
                                                     ${{ $cartContent->price * $cartContent->qty }}
                                                 </td>
                                                 <td>
-                                                    <button onclick="deleteCart('{{$cartContent->rowId}}')" class="btn btn-sm btn-danger"><i
-                                                            class="fa fa-times"></i></button>
+                                                    <button onclick="deleteCart('{{ $cartContent->rowId }}')"
+                                                        class="btn btn-sm btn-danger"><i class="fa fa-times"></i></button>
                                                 </td>
                                             </tr>
                                         @endforeach
 
 
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card cart-summery">
-                            <div class="sub-title">
-                                <h2 class="bg-white">Cart Summery</h3>
-                            </div>
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between pb-2">
-                                    <div>Subtotal</div>
-                                    <div>${{ Cart::subtotal() }}</div>
-                                </div>
-                                <div class="d-flex justify-content-between pb-2">
-                                    <div>Shipping</div>
-                                    <div>$0</div>
-                                </div>
-                                <div class="d-flex justify-content-between summery-end">
-                                    <div>Total</div>
-                                    <div>${{ Cart::subtotal() }}</div>
-                                </div>
-                                <div class="pt-5">
-                                    <a href="login.php" class="btn-dark btn btn-block w-100">Proceed to Checkout</a>
-                                </div>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
-                        <div class="input-group apply-coupan mt-4">
-                            <input type="text" placeholder="Coupon Code" class="form-control">
-                            <button class="btn btn-dark" type="button" id="button-addon2">Apply Coupon</button>
+                        <div class="col-md-4">
+                            <div class="card cart-summery">
+                                <div class="sub-title">
+                                    <h2 class="bg-white">Cart Summery</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between pb-2">
+                                        <div>Subtotal</div>
+                                        <div>${{ Cart::subtotal() }}</div>
+                                    </div>
+                                    <div class="d-flex justify-content-between pb-2">
+                                        <div>Shipping</div>
+                                        <div>$0</div>
+                                    </div>
+                                    <div class="d-flex justify-content-between summery-end">
+                                        <div>Total</div>
+                                        <div>${{ Cart::subtotal() }}</div>
+                                    </div>
+                                    <div class="pt-5">
+                                        <a href="{{ route('frontend.checkout') }}"
+                                            class="btn-dark btn btn-block w-100">Proceed to Checkout</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="input-group apply-coupan mt-4">
+                                <input type="text" placeholder="Coupon Code" class="form-control">
+                                <button class="btn btn-dark" type="button" id="button-addon2">Apply Coupon</button>
+                            </div>
                         </div>
-                    </div>
                     @else
-                    <tr>
-                        <td colspan="5" class=" text-center ">Your Cart Is Empty</td>
-                    </tr>
+                        <tr>
+                            <td colspan="5" class=" text-center ">Your Cart Is Empty</td>
+                        </tr>
                     @endif
                 </div>
             </div>
@@ -152,7 +153,7 @@
                 },
                 dataType: 'json',
                 success: function(res) {
-                         window.location.href="{{ route('frontend.cart') }}";
+                    window.location.href = "{{ route('frontend.cart') }}";
 
 
 
@@ -163,22 +164,22 @@
         function deleteCart(rowId) {
 
             if (confirm("Are You Sure To Delete This Cart?")) {
-            $.ajax({
-                url: '{{ route('frontend.delete') }}',
-                type: 'delete',
-                data: {
-                    rowId: rowId,
+                $.ajax({
+                    url: '{{ route('frontend.delete') }}',
+                    type: 'delete',
+                    data: {
+                        rowId: rowId,
 
-                },
-                dataType: 'json',
-                success: function(res) {
-                         window.location.href="{{ route('frontend.cart') }}";
+                    },
+                    dataType: 'json',
+                    success: function(res) {
+                        window.location.href = "{{ route('frontend.cart') }}";
 
 
 
-                }
-            });
+                    }
+                });
+            }
         }
-    }
     </script>
 @endsection
