@@ -64,7 +64,7 @@ class AuthController extends Controller
                 // }
 
 
-                return redirect()->route('frontend.profile');
+                // return redirect()->route('frontend.profile');
             } else {
                 session()->flash('error', 'email/pass is incorrect.');
                 return redirect()->route('frontend.login')->withInput($request->only('email'));

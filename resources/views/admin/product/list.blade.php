@@ -64,7 +64,7 @@
                                     <tr>
                                         <td>{{ $product->id }}</td>
                                         @if (!empty($productImg->image))
-                                        <td><img src="{{ asset('product/small/'. $productImg->image) }}" class="img-thumbnail" width="50"></td>
+                                        <td><img src="{{ asset('products/small/'. $productImg->image) }}" class="img-thumbnail" width="50"></td>
                                          @else
                                          <img src="{{asset('admin-assets/img/default-150x150.png')}}" class="img-thumbnail" width="50" alt=""/>
                                         @endif

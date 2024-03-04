@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\ImagesController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProductImageController;
 use App\Http\Controllers\Admin\ProductSubCategoryController;
+use App\Http\Controllers\Admin\ShippingController;
 use App\Http\Controllers\Admin\SubCategory;
 use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\AuthController;
@@ -43,87 +44,83 @@ Route::get('/checkout', [AddToCartController::class, 'checkout'])->name('fronten
 Route::post('/process-Checkout', [AddToCartController::class, 'processCheckout'])->name('frontend.processCheckout');
 Route::get('/thank-you/{orderId}', [AddToCartController::class, 'thanku'])->name('frontend.thanku');
 
-       // auth user interface
-
-
-
-        Route::group(['prefix' => 'account'], function () {
-        Route::group(['middleware' => 'guest'], function () {
-            Route::get('/login',[AuthController::class,'login'])->name('frontend.login');
-            Route::post('/login/check',[AuthController::class,'authenticate'])->name('frontend.authenticate');
-            Route::get('/register',[AuthController::class,'register'])->name('frontend.register');
-            Route::post('/register/store',[AuthController::class,'processRegister'])->name('frontend.processRegister');
-
-             });
-
-         Route::group(['middleware' => 'auth'], function () {
-
-            Route::get('/profile',[AuthController::class,'profile'])->name('frontend.profile');
-            Route::get('/logout',[AuthController::class,'logout'])->name('frontend.logout');
-
-
-        });
-
-          });
-       // for backend
-        Route::group(['middleware' => 'admin.guest'], function () {
-        Route::get('/login', [AdminLoginController::class, 'index'])->name('admin.login');
-        Route::post('/authenticate', [AdminLoginController::class, 'authenticate'])->name('admin.authenticate');
-        });
-
-        Route::group(['middleware' => 'admin.auth'], function () {
-        Route::get('/dashboard', [HomeController::class, 'index'])->name('admin.dashboard');
-        Route::get('/logout', [HomeController::class, 'logout'])->name('admin.logout');
-
-        // category
-        Route::get('/category/create', [CategoryController::class, 'create'])->name('category.create');
-        Route::get('/categorys', [CategoryController::class, 'index'])->name('category.index');
-        Route::post('/category/store', [CategoryController::class, 'store'])->name('category.store');
-        Route::post('/upload/image', [ImagesController::class, 'create'])->name('temp-images.create');
-        Route::get('/categoryes/{category}/edit', [CategoryController::class, 'edit'])->name('category.edit');
-        Route::put('/categoryes/{update}/update', [CategoryController::class, 'update'])->name('category.update');
-        Route::delete('/categoryes/{update}/delete', [CategoryController::class, 'destroy'])->name('category.delete');
-
-        // Sub Category
-        Route::get('/sub-category/create', [SubCategoryController::class, 'create'])->name('subcategory.create');
-        Route::post('/sub-category/store', [SubCategoryController::class, 'store'])->name('subcategory.store');
-        Route::get('/sub-categorys', [SubCategoryController::class, 'index'])->name('subcategory.index');
-        Route::get('/sub-categoryes/{id}/edit', [SubCategoryController::class, 'edit'])->name('subcategory.edit');
-        Route::put('/sub-categoryes/{id}/update', [SubCategoryController::class, 'update'])->name('subcategory.update');
-        Route::delete('/sub-categoryes/{id}/delete', [SubCategoryController::class, 'destroy'])->name('subcategory.delete');
-
-        //Brands route
-        Route::get('/brand/create', [BrandController::class, 'create'])->name('brand.create');
-        Route::post('/brand/store', [BrandController::class, 'store'])->name('brand.store');
-        Route::get('/brand', [BrandController::class, 'index'])->name('brand.index');
-        Route::get('/brand/{id}/edit', [BrandController::class, 'edit'])->name('brand.edit');
-        Route::put('/brand/{id}/update', [BrandController::class, 'update'])->name('brand.update');
-        Route::delete('/brand/{id}/delete', [BrandController::class, 'destroy'])->name('brand.delete');
-
-        // Product
-        Route::get('/product/create', [ProductController::class, 'create'])->name('product.create');
-        Route::post('/product/store', [ProductController::class, 'store'])->name('product.store');
-        Route::get('/product', [ProductController::class, 'index'])->name('product.index');
-        Route::get('/product/edit/{id}', [ProductController::class, 'edit'])->name('product.edit');
-        Route::put('/product/update/{id}', [ProductController::class, 'update'])->name('product.update');
-        Route::delete('/product/{id}/delete', [ProductController::class, 'destroy'])->name('product.delete');
-        Route::get('/getProducts', [ProductController::class,'getProducts'])->name('product.getProducts');
-
-
-        //if categoey select then subcategory i mean category wize subcategoey show
-        Route::get('/product/sub_cat', [ProductSubCategoryController::class, 'index'])->name('product.sub.create');
-
-
-        // slug
-        Route::get('/getSlug', function (Request $request) {
-            $slug = '';
-            if (!empty($request->title)) {
-                $slug = Str::slug($request->title);
-            }
-            return response()->json([
-                'status' => true,
-                'slug' => $slug
-            ]);
-        })->name('getSlug');
+// auth user interface
+Route::group(['prefix' => 'account'], function () {
+    Route::group(['middleware' => 'guest'], function () {
+        Route::get('/login', [AuthController::class, 'login'])->name('frontend.login');
+        Route::post('/login/check', [AuthController::class, 'authenticate'])->name('frontend.authenticate');
+        Route::get('/register', [AuthController::class, 'register'])->name('frontend.register');
+        Route::post('/register/store', [AuthController::class, 'processRegister'])->name('frontend.processRegister');
     });
+    Route::group(['middleware' => 'auth'], function () {
+        Route::get('/profile', [AuthController::class, 'profile'])->name('frontend.profile');
+        Route::get('/logout', [AuthController::class, 'logout'])->name('frontend.logout');
+    });
+});
+// for backend
+Route::group(['middleware' => 'admin.guest'], function () {
+    Route::get('/login', [AdminLoginController::class, 'index'])->name('admin.login');
+    Route::post('/authenticate', [AdminLoginController::class, 'authenticate'])->name('admin.authenticate');
+});
 
+Route::group(['middleware' => 'admin.auth'], function () {
+    Route::get('/dashboard', [HomeController::class, 'index'])->name('admin.dashboard');
+    Route::get('/logout', [HomeController::class, 'logout'])->name('admin.logout');
+
+    // category
+    Route::get('/category/create', [CategoryController::class, 'create'])->name('category.create');
+    Route::get('/categorys', [CategoryController::class, 'index'])->name('category.index');
+    Route::post('/category/store', [CategoryController::class, 'store'])->name('category.store');
+    Route::post('/upload/image', [ImagesController::class, 'create'])->name('temp-images.create');
+    Route::get('/categoryes/{category}/edit', [CategoryController::class, 'edit'])->name('category.edit');
+    Route::put('/categoryes/{update}/update', [CategoryController::class, 'update'])->name('category.update');
+    Route::delete('/categoryes/{update}/delete', [CategoryController::class, 'destroy'])->name('category.delete');
+
+    // Sub Category
+    Route::get('/sub-category/create', [SubCategoryController::class, 'create'])->name('subcategory.create');
+    Route::post('/sub-category/store', [SubCategoryController::class, 'store'])->name('subcategory.store');
+    Route::get('/sub-categorys', [SubCategoryController::class, 'index'])->name('subcategory.index');
+    Route::get('/sub-categoryes/{id}/edit', [SubCategoryController::class, 'edit'])->name('subcategory.edit');
+    Route::put('/sub-categoryes/{id}/update', [SubCategoryController::class, 'update'])->name('subcategory.update');
+    Route::delete('/sub-categoryes/{id}/delete', [SubCategoryController::class, 'destroy'])->name('subcategory.delete');
+
+    //Brands route
+    Route::get('/brand/create', [BrandController::class, 'create'])->name('brand.create');
+    Route::post('/brand/store', [BrandController::class, 'store'])->name('brand.store');
+    Route::get('/brand', [BrandController::class, 'index'])->name('brand.index');
+    Route::get('/brand/{id}/edit', [BrandController::class, 'edit'])->name('brand.edit');
+    Route::put('/brand/{id}/update', [BrandController::class, 'update'])->name('brand.update');
+    Route::delete('/brand/{id}/delete', [BrandController::class, 'destroy'])->name('brand.delete');
+
+    // Product
+    Route::get('/product/create', [ProductController::class, 'create'])->name('product.create');
+    Route::post('/product/store', [ProductController::class, 'store'])->name('product.store');
+    Route::get('/product', [ProductController::class, 'index'])->name('product.index');
+    Route::get('/product/edit/{id}', [ProductController::class, 'edit'])->name('product.edit');
+    Route::put('/product/update/{id}', [ProductController::class, 'update'])->name('product.update');
+    Route::delete('/product/{id}/delete', [ProductController::class, 'destroy'])->name('product.delete');
+    Route::get('/getProducts', [ProductController::class, 'getProducts'])->name('product.getProducts');
+
+
+    // shipping Route
+    Route::get('/shipping/create', [ShippingController::class, 'create'])->name('shipping.create');
+     Route::post('/shipping/store', [ShippingController::class, 'store'])->name('shipping.store');
+     Route::get('/shipping/delete/{id}', [ShippingController::class, 'deleteship'])->name('shipping.delete');
+
+
+    //if categoey select then subcategory i mean category wize subcategoey show
+    Route::get('/product/sub_cat', [ProductSubCategoryController::class, 'index'])->name('product.sub.create');
+
+
+    // slug
+    Route::get('/getSlug', function (Request $request) {
+        $slug = '';
+        if (!empty($request->title)) {
+            $slug = Str::slug($request->title);
+        }
+        return response()->json([
+            'status' => true,
+            'slug' => $slug
+        ]);
+    })->name('getSlug');
+});
