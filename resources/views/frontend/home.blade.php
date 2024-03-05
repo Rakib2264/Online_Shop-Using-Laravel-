@@ -20,7 +20,8 @@
                         <h1 class="display-4 text-white mb-3">Kids Fashion</h1>
                         <p class="mx-md-5 px-5">Lorem rebum magna amet lorem magna erat diam stet. Sadips duo
                             stet amet amet ndiam elitr ipsum diam</p>
-                        <a class="btn btn-outline-light py-2 px-4 mt-3" href="#">Shop Now</a>
+                        <a class="btn btn-outline-light py-2 px-4 mt-3" href="{{route('admin.login')}}">Shop Now</a>
+                        <a class="btn btn-outline-light py-2 px-4 mt-3" href="{{route('frontend.profile')}}">Shop Now</a>
                     </div>
                 </div>
             </div>
@@ -155,7 +156,7 @@
                                 <a href="{{route('frontend.product_detail',$product->slug)}}" class="product-img">
 
                                     @if (!empty($productImg->image))
-                                        <img src="{{ asset('product/small/' . $productImg->image) }}"
+                                        <img src="{{ asset('products/small/' . $productImg->image) }}"
                                             class="img-thumbnail">
                                     @else
                                         <img src="{{ asset('admin-assets/img/default-150x150.png') }}"
@@ -204,7 +205,7 @@
                                 <a href="{{route('frontend.product_detail',$product->slug)}}" class="product-img">
 
                                     @if (!empty($productImg->image))
-                                        <img src="{{ asset('product/small/' . $productImg->image) }}"
+                                        <img src="{{ asset('products/small/' . $productImg->image) }}"
                                             class="img-thumbnail">
                                     @else
                                         <img src="{{ asset('admin-assets/img/default-150x150.png') }}"

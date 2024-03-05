@@ -7,6 +7,7 @@ use App\Models\CustomerAddress;
 use App\Models\Order;
 use App\Models\OrderItems;
 use App\Models\Product;
+use App\Models\ShippingCharges;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Cart;
@@ -122,20 +123,33 @@ class AddToCartController extends Controller
         }
 
         // If the user is not logged in, redirect to the login page
-        if (!Auth::check() == false) {
+        if (!Auth::check()) {
             // Save the intended URL to session if not already set
-            // if (!session()->has('url.intended')) {
-            //     session(['url.intended' => url()->current()]);
-            // }
-            // return redirect()->route('frontend.login');
-        }
-        // session()->forget('url.intended');
 
-        $custumeraddress = CustomerAddress::where('user_id',Auth::user()->id)->first();
+            return redirect()->route('frontend.login');
+        }
+
+
         $countrys = Country::orderBy('name', 'asc')->get();
+        $custumeraddress = CustomerAddress::where('user_id',Auth::user()->id)->first();
+
+        // calculate shipping here
+        $userCountry = $custumeraddress->country_id;
+        $shippinginfo = ShippingCharges::where('country_id',$userCountry)->first();
+        $shippinginfo->amount;
+         $totalQty = 0;
+         $totalshippingcharge=0;
+         $grandtotal = 0;
+        foreach ('Cart'::content() as $item) {
+
+            $totalQty += $item->qty;
+
+        }
+        $totalshippingcharge = $totalQty*$shippinginfo->amount;
+        $grandtotal = 'Cart'::subtotal(2,'.','')+$totalshippingcharge;
 
         // If the user is logged in and the cart is not empty, show the checkout page
-        return view('frontend.checkout', compact('countrys','custumeraddress'));
+        return view('frontend.checkout', compact('countrys','custumeraddress','totalshippingcharge','grandtotal'));
     }
 
     public function processCheckout(Request $request)
@@ -240,4 +254,6 @@ class AddToCartController extends Controller
 
         return view('frontend.layouts.thanku',compact('id'));
     }
+
+
 }

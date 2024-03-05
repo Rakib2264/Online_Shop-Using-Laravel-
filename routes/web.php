@@ -4,6 +4,7 @@ use App\Http\Controllers\AddToCartController;
 use App\Http\Controllers\Admin\AdminLoginController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\DiscountCodeController;
 use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Admin\ImagesController;
 use App\Http\Controllers\Admin\ProductController;
@@ -106,6 +107,11 @@ Route::group(['middleware' => 'admin.auth'], function () {
     Route::get('/shipping/create', [ShippingController::class, 'create'])->name('shipping.create');
      Route::post('/shipping/store', [ShippingController::class, 'store'])->name('shipping.store');
      Route::get('/shipping/delete/{id}', [ShippingController::class, 'deleteship'])->name('shipping.delete');
+
+    //  coupon
+    Route::get('/coupons', [DiscountCodeController::class, 'index'])->name('coupon.index');
+    Route::get('/coupon/create', [DiscountCodeController::class, 'create'])->name('coupon.create');
+    Route::post('/coupon/store', [DiscountCodeController::class, 'store'])->name('coupon.store');
 
 
     //if categoey select then subcategory i mean category wize subcategoey show

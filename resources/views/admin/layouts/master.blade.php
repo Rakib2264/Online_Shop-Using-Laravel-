@@ -17,6 +17,7 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('admin') }}/css/adminlte.min.css">
     <link rel="stylesheet" href="{{ asset('admin') }}/css/custom.css">
+    <link rel="stylesheet" href="{{ asset('admin') }}/css/datetimepicker.css">
 </head>
 
 <body class="hold-transition sidebar-mini">
@@ -81,6 +82,8 @@
         </footer>
 
     </div>
+
+    
     <!-- ./wrapper -->
     <!-- jQuery -->
     <script src="{{ asset('admin') }}/plugins/jquery/jquery.min.js"></script>
@@ -90,6 +93,7 @@
     <script src="{{ asset('admin') }}/js/adminlte.min.js"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="{{ asset('admin') }}/js/demo.js"></script>
+    <script src="{{ asset('admin') }}/js/datetimepicker.js"></script>
     <script src="{{ asset('admin') }}/plugins/dropzone/dropzone.js"></script>
     <script src="{{ asset('admin') }}/plugins/summernote/summernote-bs4.min.js"></script>
     <script src="{{ asset('admin') }}/plugins/select2/js/select2.min.js"></script>
