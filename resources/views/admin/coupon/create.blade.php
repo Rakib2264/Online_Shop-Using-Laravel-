@@ -101,8 +101,8 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="starts_at" class="form-label">Starts At:</label>
-                                    <input autocomplete="off" type="text" name="starts_at" id="starts_at" class="form-control"
-                                        placeholder="Enter Start">
+                                    <input autocomplete="off" type="text" name="starts_at" id="starts_at"
+                                        class="form-control" placeholder="Enter Start">
                                     <p></p>
                                 </div>
                             </div>
@@ -110,8 +110,8 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="expires_at" class="form-label">Expire At:</label>
-                                    <input autocomplete="off" type="text" name="expires_at" id="expires_at" class="form-control"
-                                        placeholder="Enter Expire">
+                                    <input autocomplete="off" type="text" name="expires_at" id="expires_at"
+                                        class="form-control" placeholder="Enter Expire">
                                     <p></p>
                                 </div>
                             </div>

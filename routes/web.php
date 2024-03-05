@@ -112,6 +112,10 @@ Route::group(['middleware' => 'admin.auth'], function () {
     Route::get('/coupons', [DiscountCodeController::class, 'index'])->name('coupon.index');
     Route::get('/coupon/create', [DiscountCodeController::class, 'create'])->name('coupon.create');
     Route::post('/coupon/store', [DiscountCodeController::class, 'store'])->name('coupon.store');
+    Route::get('/coupon/edit/{id}', [DiscountCodeController::class, 'edit'])->name('category.edit');
+    Route::put('/coupon/update/{id}', [DiscountCodeController::class, 'update'])->name('coupon.update');
+    Route::delete('/coupon/delete/{id}', [DiscountCodeController::class, 'destroy'])->name('coupon.delete');
+
 
 
     //if categoey select then subcategory i mean category wize subcategoey show
