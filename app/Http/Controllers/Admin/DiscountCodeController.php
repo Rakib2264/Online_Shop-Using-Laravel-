@@ -11,9 +11,14 @@ use Illuminate\Support\Facades\Validator;
 class DiscountCodeController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
-        return view('admin.coupon.list');
+        $discountCoupons = DiscountCoupon::latest();
+        if(!empty($request->get('keyword'))){
+            $discountCoupons = $discountCoupons->where('name','like','%'.$request->get('keyword').'%');
+        }
+        $discountCoupons = $discountCoupons->paginate(5);
+        return view('admin.coupon.list',compact('discountCoupons'));
     }
 
     public function create()
