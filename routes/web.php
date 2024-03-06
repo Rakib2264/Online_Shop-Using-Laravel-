@@ -44,6 +44,9 @@ Route::delete('/add-to-cart/delete', [AddToCartController::class, 'delete'])->na
 Route::get('/checkout', [AddToCartController::class, 'checkout'])->name('frontend.checkout');
 Route::post('/process-Checkout', [AddToCartController::class, 'processCheckout'])->name('frontend.processCheckout');
 Route::get('/thank-you/{orderId}', [AddToCartController::class, 'thanku'])->name('frontend.thanku');
+Route::post('/getOrder-Summery', [AddToCartController::class, 'getOrderSummery'])->name('frontend.getOrderSummery');
+Route::post('/applyDiscount', [AddToCartController::class, 'applyDiscount'])->name('frontend.applyDiscount');
+Route::post('/remove-Discount', [AddToCartController::class, 'removeCoupon'])->name('frontend.removeDiscount');
 
 // auth user interface
 Route::group(['prefix' => 'account'], function () {
@@ -105,8 +108,10 @@ Route::group(['middleware' => 'admin.auth'], function () {
 
     // shipping Route
     Route::get('/shipping/create', [ShippingController::class, 'create'])->name('shipping.create');
-     Route::post('/shipping/store', [ShippingController::class, 'store'])->name('shipping.store');
-     Route::get('/shipping/delete/{id}', [ShippingController::class, 'deleteship'])->name('shipping.delete');
+    Route::post('/shipping/store', [ShippingController::class, 'store'])->name('shipping.store');
+    Route::get('/shipping/edit/{id}', [ShippingController::class, 'edit'])->name('shipping.edit');
+    Route::put('/shipping/update/{id}', [ShippingController::class, 'update'])->name('shipping.update');
+    Route::delete('/shipping/delete/{id}', [ShippingController::class, 'destroy'])->name('shipping.delete');
 
     //  coupon
     Route::get('/coupons', [DiscountCodeController::class, 'index'])->name('coupon.index');

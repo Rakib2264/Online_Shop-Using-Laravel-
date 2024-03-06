@@ -154,16 +154,33 @@
                                         <div class="h6"><strong>Subtotal</strong></div>
                                         <div class="h6"><strong>${{ Cart::subtotal() }}</strong></div>
                                     </div>
+                                    <div class="d-flex justify-content-between summery-end">
+                                        <div class="h6"><strong>Discount</strong></div>
+                                        <div class="h6"><strong id="discountval">${{ $discount }}</strong></div>
+                                    </div>
                                     <div class="d-flex justify-content-between mt-2">
                                         <div class="h6"><strong>Shipping</strong></div>
-                                        <div class="h6"><strong>${{ number_format($totalshippingcharge,2) }}</strong></div>
+                                        <div class="h6"><strong id="shippingAmount">${{ number_format($totalshippingcharge, 2) }}</strong>
+                                        </div>
                                     </div>
                                     <div class="d-flex justify-content-between mt-2 summery-end">
                                         <div class="h5"><strong>Total</strong></div>
-                                        <div class="h5"><strong>${{ number_format($grandtotal,2) }}</strong></div>
+                                        <div class="h5"><strong id="grandTotal">${{ number_format($grandtotal, 2) }}</strong></div>
                                     </div>
                                 </div>
                             </div>
+                            <div class="input-group apply-coupan mt-4">
+                                <input type="text" placeholder="Coupon Code" class="form-control" id="discount_code">
+                                <button class="btn btn-dark" type="button" id="apply_discount">Apply Coupon</button>
+                            </div>
+                         <div id="dicsount-wraper">
+                            @if (Session::has('code'))
+                            <div class="mt-4" id="dicsounticonremove">
+                               <strong>{{Session::get('code')->code}}</strong>
+                               <a  class="btn btn-sm btn-danger" id="removediscount"><i class="fa fa-times"></i></a>
+                            </div>
+                            @endif
+                         </div>
 
                             <div class="card payment-form ">
                                 <h3 class="card-title h5 mb-3">Payment Method</h3>
@@ -227,8 +244,7 @@
                 $("#card-payment-form").removeClass('d-none');
             }
         })
-    </script>
-    <script>
+
         $("#orderForm").submit(function(e) {
             e.preventDefault();
             $('button[type="submit"]').prop('disibled', true);
@@ -320,8 +336,75 @@
                 }
             });
         })
+    </script>
+    <script>
+        //  select country then update
+        $("#country").change(function(){
+             $.ajax({
+                url: '{{ route('frontend.getOrderSummery') }}',
+                type: 'post',
+                data: {country_id : $(this).val()},
+                dataType: 'json',
+                success: function(res) {
+
+                    if (res.status == true) {
+
+                        $("#shippingAmount").html('$'+res.shippingCharge);
+                        $("#grandTotal").html('$'+res.grandTotal);
+                    }
 
 
-   
+                 }
+             });
+        })
+
+
+        // discount coupon
+        $("#apply_discount").click(function() {
+             $.ajax({
+                url: '{{ route('frontend.applyDiscount') }}',
+                type: 'post',
+                data:{code: $("#discount_code").val() , country_id: $("#country").val()},
+                dataType: 'json',
+                success: function(res) {
+
+                    if (res.status == true) {
+                        $("#shippingAmount").html('$'+res.shippingCharge);
+                        $("#grandTotal").html('$'+res.grandTotal);
+                        $("#discountval").html('$'+res.discount);
+                        $("#dicsount-wraper").html(res.discountString)
+
+
+                    }
+                }
+            });
+
+        });
+       // removecoupon
+        $("body").on('click','#removediscount',function(){
+            $.ajax({
+                url: '{{ route('frontend.removeDiscount') }}',
+                type: 'post',
+                data:{country_id: $("#country").val()},
+                dataType: 'json',
+                success: function(res) {
+
+                    if (res.status == true) {
+                        $("#shippingAmount").html('$'+res.shippingCharge);
+                        $("#grandTotal").html('$'+res.grandTotal);
+                        $("#discountval").html('$'+res.discount);
+                        $("#dicsounticonremove").html('');
+                        $("#discount_code").val('');
+
+                    }
+                }
+            });
+        });
+
+        // $("#removediscount").click(function() {
+
+
+        // });
+
     </script>
 @endsection

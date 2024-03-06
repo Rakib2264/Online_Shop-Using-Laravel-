@@ -29,7 +29,7 @@
                                         <option value="" disabled selected>Secect A Country</option>
                                         @if ($countries->isNotEmpty())
                                             @foreach ($countries as $country)
-                                                <option value="{{ $country->id }}">{{ $country->name }}</option>
+                                                <option {{($shippingcharge->country_id == $country->id) ? 'selected' : ''}} value="{{ $country->id }}">{{ $country->name }}</option>
                                             @endforeach
                                             <option value="rest_of_world">Rest Of the world</option>
                                         @endif
@@ -38,53 +38,16 @@
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <input type="text" name="amount" id="amount" class="form-control"
+                                <input type="text" name="amount" value="{{$shippingcharge->amount}}" id="amount" class="form-control"
                                     placeholder="Amount">
                                 <p></p>
                             </div>
                             <div class="col-md-4">
-                                <button type="submit" class="btn btn-primary">Create</button>
+                                <button type="submit" class="btn btn-primary">Update</button>
                             </div>
                         </div>
                     </form>
-                    <div class="card mt-5">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-12 justify-content-center ">
-                                    <div class="table-responsive">
-                                        <table class="table table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <th>ID</th>
-                                                    <th>Country</th>
-                                                    <th>Amount</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @if ($shippingcharges->isNotEmpty())
-                                                @foreach ($shippingcharges as $shippingcharge)
-                                                <tr>
-                                                    <td>{{ $shippingcharge->id }}</td>
-                                                    <td>{{ $shippingcharge->country_id == 'rest_of_world' ? 'Rest Of the world' : $shippingcharge->name }}</td>
-                                                    <td>${{ $shippingcharge->amount }}</td>
-                                                    <td>
-                                                        <a href="{{route('shipping.edit',$shippingcharge->id)}}" class="btn btn-sm btn-info">Edit</a>
-                                                        <a href="javascript:void(0)" onclick="deleteship({{ $shippingcharge->id }})" class="btn btn-sm btn-danger">Delete</a>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                            @endif
 
-
-                                            </tbody>
-
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
                 </div>
 
@@ -101,8 +64,8 @@
                 $("button[type=submit]").prop('disabled', true);
 
                 $.ajax({
-                    url: '{{ route('shipping.store') }}',
-                    type: 'post',
+                    url: '{{ route('shipping.update',$shippingcharge->id) }}',
+                    type: 'put',
                     dataType: 'json',
                     data: $(this).serializeArray(),
                     headers: {
@@ -141,31 +104,6 @@
             });
         });
 
-        function deleteship(id) {
-
-            var url = '{{ route('shipping.delete', 'ID') }}'
-            var newUrl = url.replace("ID", id)
-
-
-            if (confirm("Are You Sure You Want To Delete")) {
-                $.ajax({
-                    url: newUrl,
-                    type: 'DELETE',
-                    dataType: 'json',
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function(res) {
-                        // Redirect to the category index page upon successful deletion
-                        window.location.href = "{{ route('shipping.create') }}";
-                    },
-                    error: function(xhr, status, error) {
-                        // Handle error, if any
-                        console.error(xhr.responseText);
-                    }
-                });
-            }
-
-        }
+      
     </script>
 @endsection

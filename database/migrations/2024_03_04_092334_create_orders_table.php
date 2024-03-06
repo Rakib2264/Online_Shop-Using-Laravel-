@@ -17,9 +17,10 @@ return new class extends Migration
             $table->double('subtotal',10,2);
             $table->double('shipping',10,2);
             $table->string('coupon_code')->nullable();
+            $table->string('coupon_code_id')->nullable();
             $table->double('discount',10,2)->nullable();
             $table->double('grand_total',10,2);
-             $table->string('first_name');
+            $table->string('first_name');
             $table->string('last_name');
             $table->string('email');
             $table->string('mobile');

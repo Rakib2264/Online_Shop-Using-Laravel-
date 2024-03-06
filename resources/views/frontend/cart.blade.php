@@ -99,10 +99,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="input-group apply-coupan mt-4">
-                                <input type="text" placeholder="Coupon Code" class="form-control">
-                                <button class="btn btn-dark" type="button" id="button-addon2">Apply Coupon</button>
-                            </div>
+                         
                         </div>
                     @else
                         <tr>
