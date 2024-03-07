@@ -373,8 +373,8 @@
                         $("#grandTotal").html('$'+res.grandTotal);
                         $("#discountval").html('$'+res.discount);
                         $("#dicsount-wraper").html(res.discountString)
-
-
+                    }else{
+                        $("#dicsount-wraper").html("<span class='text-danger'>"+res.msg+"</span>");
                     }
                 }
             });

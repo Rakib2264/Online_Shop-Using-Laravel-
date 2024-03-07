@@ -150,7 +150,7 @@ class AddToCartController extends Controller
             }
         }
         // calculate shipping here
-        if ($custumeraddress == null) {
+        if ($custumeraddress) {
             $userCountry = $custumeraddress->country_id;
             $shippinginfo = ShippingCharges::where('country_id', $userCountry)->first();
             $totalQty = 0;
@@ -224,8 +224,8 @@ class AddToCartController extends Controller
             $discount = 0;
             $subTotal = 'Cart'::subtotal(2, '.', '');
             // $grandTotal = $subTotal + $shipping;
-               // apply discount Here
-               if (session()->has('code')) {
+            // apply discount Here
+            if (session()->has('code')) {
                 $code = session()->get('code');
                 if ($code->type == 'parcent') {
                     $discount = ($code->discount_amount / 100) * $subTotal;
@@ -409,6 +409,42 @@ class AddToCartController extends Controller
                 ]);
             }
         }
+        // max uses check
+        if ($code->max_uses > 0) {
+            $couponUsed = Order::where('coupon_code_id', $code->id)->count();
+            if ($couponUsed >= $code->max_uses) {
+                return response()->json([
+                    'status' => false,
+                    'msg' => 'Invalid discount coupon'
+                ]);
+            }
+        }
+
+        // max uses user check
+        if ($code->max_uses_user > 0) {
+
+            $couponUsedByUser = Order::where('coupon_code_id', $code->id)->where('user_id', Auth::user()->id)->count();
+
+            if ($couponUsedByUser >= $code->max_uses_user) {
+                return response()->json([
+                    'status' => false,
+                    'msg' => 'You already use this coupon'
+                ]);
+            }
+        }
+        $subTotal = 'Cart'::subtotal(2, '.', '');
+        // minimum amount condiction check
+        if ($code->min_amount > 0) {
+             if ($subTotal < $code->min_amount) {
+                return response()->json([
+                    'status' => false,
+                    'msg' => 'Your Minimum maount Must Be $'.$code->min_amount.'.',
+                ]);
+             }
+        }
+
+
+
         session()->put('code', $code);
         return $this->getOrderSummery($request);
     }
