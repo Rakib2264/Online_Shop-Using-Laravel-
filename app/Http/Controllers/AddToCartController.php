@@ -218,7 +218,7 @@ class AddToCartController extends Controller
 
         // stem 3 store data in orders table
         if ($request->payment_method == 'cod') {
-            $discountCodeId = '';
+            $discountCodeId = NULL;
             $promoCode = '';
             $shipping = 0;
             $discount = 0;
@@ -259,6 +259,8 @@ class AddToCartController extends Controller
             $order->subtotal = $subTotal;
             $order->shipping = $shipping;
             $order->discount = $discount;
+            $order->payment_status = 'not paid';
+            $order->status = 'pending';
             $order->coupon_code_id = $discountCodeId;
             $order->coupon_code = $promoCode;
             $order->grand_total = $grandTotal;

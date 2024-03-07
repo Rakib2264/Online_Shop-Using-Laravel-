@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DiscountCodeController;
 use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Admin\ImagesController;
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProductImageController;
 use App\Http\Controllers\Admin\ProductSubCategoryController;
@@ -59,6 +60,8 @@ Route::group(['prefix' => 'account'], function () {
     Route::group(['middleware' => 'auth'], function () {
         Route::get('/profile', [AuthController::class, 'profile'])->name('frontend.profile');
         Route::get('/logout', [AuthController::class, 'logout'])->name('frontend.logout');
+        Route::get('/my-orders', [AuthController::class, 'orders'])->name('frontend.orders');
+        Route::get('/order-details/{id}', [AuthController::class, 'orderDetails'])->name('frontend.orderDetails');
     });
 });
 // for backend
@@ -120,6 +123,11 @@ Route::group(['middleware' => 'admin.auth'], function () {
     Route::get('/coupon/edit/{id}', [DiscountCodeController::class, 'edit'])->name('category.edit');
     Route::put('/coupon/update/{id}', [DiscountCodeController::class, 'update'])->name('coupon.update');
     Route::delete('/coupon/delete/{id}', [DiscountCodeController::class, 'destroy'])->name('coupon.delete');
+
+    // Orders Route
+    Route::get('/orders', [OrderController::class, 'index'])->name('order.index');
+    Route::get('/orders/{id}', [OrderController::class, 'detail'])->name('order.detail');
+
 
 
 
