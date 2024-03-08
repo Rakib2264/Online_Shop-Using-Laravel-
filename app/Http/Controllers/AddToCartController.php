@@ -289,6 +289,8 @@ class AddToCartController extends Controller
                 $orderitem->total = $item->price * $item->qty;
                 $orderitem->save();
             }
+            // send order Email
+            orderEmail($order->id);
             session()->flash('success', 'Order Saved');
             'Cart'::destroy();
 

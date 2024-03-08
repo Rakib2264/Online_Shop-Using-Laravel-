@@ -31,6 +31,9 @@ use Illuminate\Support\Str;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+// Route::get('/test',function(){
+//     orderEmail(46);
+// });
 
 
 // for frontend
