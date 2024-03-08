@@ -131,6 +131,7 @@ Route::group(['middleware' => 'admin.auth'], function () {
     Route::get('/orders', [OrderController::class, 'index'])->name('order.index');
     Route::get('/orders/{id}', [OrderController::class, 'detail'])->name('order.detail');
     Route::post('/change-Order-Status/{id}', [OrderController::class, 'changeOrderStatus'])->name('order.changeOrderStatus');
+    Route::post('/Order-send-Invoice-Email/{id}', [OrderController::class, 'sendInvoiceEmail'])->name('order.sendInvoiceEmail');
 
 
 

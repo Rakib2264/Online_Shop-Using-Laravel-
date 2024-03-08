@@ -9,17 +9,23 @@
 </head>
 
 <body style="font-family: Arial, Helvetica, sans-serif; font-size:16px;">
+    @if ($mailData['userType'] == 'customer')
     <h1>Thanks For Your Order</h1>
     <h2>Your Order Id Is:#{{ $mailData['order']->id }}</h2>
+    @else
+    <h1>You have received an order</h1>
+    <h2>Order Id Is:#{{ $mailData['order']->id }}</h2>
+    @endif
+
     <h2>Shipping Address</h2>
     <address>
         <strong> {{ $mailData['order']->first_name . ' ' . $mailData['order']->last_name }}</strong><br>
         Address: {{ $mailData['order']->address }}<br>
-        Country Name:  {{getCountry($mailData['order']->country_id)->name }}<br>
+        Country Name: {{ getCountry($mailData['order']->country_id)->name }}<br>
         City: {{ $mailData['order']->city }} <br>
         Zip: {{ $mailData['order']->zip }} <br>
         Phone: {{ $mailData['order']->mobile }}<br>
-        Email: {{$mailData['order']->email }}
+        Email: {{ $mailData['order']->email }}
     </address>
     <h2>Products</h2>
     <table cellpadding="3" cellspaching="3" border="0" width="700">

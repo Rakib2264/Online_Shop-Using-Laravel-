@@ -135,16 +135,18 @@
                     </div>
                     <div class="card">
                         <div class="card-body">
+                            <form action="" id="sendInvoiceEmail" name="sendInvoiceEmail" method="post">
                             <h2 class="h4 mb-3">Send Inovice Email</h2>
                             <div class="mb-3">
-                                <select name="status" id="status" class="form-control">
-                                    <option value="">Customer</option>
-                                    <option value="">Admin</option>
+                                <select name="userType" id="userType" class="form-control">
+                                    <option value="customer">Customer</option>
+                                    <option value="admin">Admin</option>
                                 </select>
                             </div>
                             <div class="mb-3">
                                 <button class="btn btn-primary">Send</button>
                             </div>
+                        </form>
                         </div>
                     </div>
                 </div>
@@ -169,6 +171,7 @@
             // changeOrderStatusForm
             $("#changeOrderStatusForm").submit(function(e) {
                 e.preventDefault();
+                if (confirm("Are You Sure You Want To Change Order Status?")) {
                 $.ajax({
                     url: '{{ route('order.changeOrderStatus', $order->id) }}',
                     type: 'post',
@@ -181,6 +184,28 @@
 
                     }
                 });
+            }
+            })
+
+             // sendInvoiceEmail
+             $("#sendInvoiceEmail").submit(function(e) {
+                e.preventDefault();
+                if (confirm("Are You Sure You Want To Send Email ?")) {
+                $.ajax({
+                    url: '{{ route('order.sendInvoiceEmail', $order->id) }}',
+                    type: 'post',
+                    data: $(this).serializeArray(),
+                    dataType: 'json',
+                    success: function(res) {
+                        if (res.status === true) {
+                            window.location.href = window.location.href;
+
+                        }
+
+                    }
+                });
+
+            }
             })
         });
     </script>
