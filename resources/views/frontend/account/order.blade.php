@@ -41,17 +41,20 @@
                                                 @foreach ($orders as $order)
                                                     <tr>
                                                         <td>
-                                                            <a href="{{route('frontend.orderDetails',$order->id)}}">{{ $order->id }}</a>
+                                                            <a
+                                                                href="{{ route('frontend.orderDetails', $order->id) }}">{{ $order->id }}</a>
                                                         </td>
                                                         <td>{{ \carbon\Carbon::parse($order->created_at)->format('d, M , Y') }}
                                                         </td>
                                                         <td>
                                                             @if ($order->status == 'pending')
-                                                            <span class="badge bg-danger">Pending</span>
+                                                                <span class="badge bg-warning">Pending</span>
                                                             @elseif ($order->status == 'shipped')
-                                                            <span class="badge bg-info">Shipped</span>
+                                                                <span class="badge bg-info">Shipped</span>
+                                                            @elseif ($order->status == 'cancelled')
+                                                                <span class="badge bg-success">cancelled</span>
                                                             @else
-                                                            <span class="badge bg-success">Deleveried</span>
+                                                                <span class="badge bg-secondary">Deliverieda</span>
                                                             @endif
 
                                                         </td>

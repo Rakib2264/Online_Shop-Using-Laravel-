@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('orders', function (Blueprint $table) {
             $table->enum('payment_status',['paid','not paid'])->after('discount')->default('not paid');
-            $table->enum('status',['pending','shipped','delivered'])->after('payment_status')->default('pending');
+            $table->enum('status',['pending','shipped','delivered','cancelled'])->after('payment_status')->default('pending');
         });
     }
 

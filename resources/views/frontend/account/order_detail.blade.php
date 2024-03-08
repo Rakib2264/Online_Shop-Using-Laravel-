@@ -44,7 +44,10 @@
                                                 <!-- Text -->
                                                 <p class="mb-lg-0 fs-sm fw-bold">
                                                     <time datetime="2019-10-01">
-                                                        01 Oct, 2019
+                                                        @if (!empty($order->shipped_date))
+                                                            {{ \Carbon\Carbon::parse($order->shipped_date)->format('d M, Y') }}
+                                                        @endif
+
                                                     </time>
                                                 </p>
                                             </div>
@@ -57,6 +60,8 @@
                                                         <span class="badge bg-danger">Pending</span>
                                                     @elseif ($order->status == 'shipped')
                                                         <span class="badge bg-info">Shipped</span>
+                                                    @elseif ($order->status == 'cancelled')
+                                                        <span class="badge bg-warning">Cancelled</span>
                                                     @else
                                                         <span class="badge bg-success">Deleveried</span>
                                                     @endif
@@ -79,7 +84,7 @@
                             <div class="card-footer p-3">
 
                                 <!-- Heading -->
-                                <h6 class="mb-7 h5 mt-4">Order Items (3)</h6>
+                                <h6 class="mb-7 h5 mt-4">Order Items ({{$order_count}})</h6>
 
                                 <!-- Divider -->
                                 <hr class="my-3">
@@ -87,41 +92,39 @@
                                 <!-- List group -->
                                 <ul>
                                     @if ($order_item->isNotEmpty())
-
-                                       @foreach ($order_item as $order_item)
-
-
-                                    <li class="list-group-item">
-                                        <div class="row align-items-center">
-                                            <div class="col-4 col-md-3 col-xl-2">
-                                                <!-- Image -->
-                                                {{-- <a href="product.html"><img src="images/product-1.jpg" alt="..."
+                                        @foreach ($order_item as $order_item)
+                                            <li class="list-group-item">
+                                                <div class="row align-items-center">
+                                                    <div class="col-4 col-md-3 col-xl-2">
+                                                        <!-- Image -->
+                                                        {{-- <a href="product.html"><img src="images/product-1.jpg" alt="..."
                                                         class="img-fluid"></a> --}}
                                                         @php
                                                             $productImage = getProductImage($order_item->product_id);
                                                         @endphp
 
-                                                            @if (!empty($productImage->image))
-                                                            <img class="img-fluid" src="{{ asset('products/small/' . $productImage->image) }}"
+                                                        @if (!empty($productImage->image))
+                                                            <img class="img-fluid"
+                                                                src="{{ asset('products/small/' . $productImage->image) }}"
                                                                 class="img-thumbnail">
-                                                            @else
-                                                            <img class="img-fluid" src="{{ asset('admin-assets/img/default-150x150.png') }}"
+                                                        @else
+                                                            <img class="img-fluid"
+                                                                src="{{ asset('admin-assets/img/default-150x150.png') }}"
                                                                 class="img-thumbnail" alt="" />
-                                                            @endif
-                                            </div>
-                                            <div class="col">
-                                                <!-- Title -->
-                                                <p class="mb-4 fs-sm fw-bold">
-                                                    <a class="text-body" href="product.html">{{ $order_item->name}} x
-                                                        {{ $order_item->qty}}</a> <br>
-                                                    <span class="text-muted">${{ $order_item->total}}</span>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </li>
-
-                                    @endforeach
-
+                                                        @endif
+                                                    </div>
+                                                    <div class="col">
+                                                        <!-- Title -->
+                                                        <p class="mb-4 fs-sm fw-bold">
+                                                            <a class="text-body" href="product.html">{{ $order_item->name }}
+                                                                x
+                                                                {{ $order_item->qty }}</a> <br>
+                                                            <span class="text-muted">${{ $order_item->total }}</span>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        @endforeach
                                     @endif
 
                                 </ul>
@@ -137,20 +140,21 @@
                                 <ul>
                                     <li class="list-group-item d-flex">
                                         <span>Subtotal</span>
-                                        <span class="ms-auto">${{ number_format($order->subtotal,2) }}</span>
+                                        <span class="ms-auto">${{ number_format($order->subtotal, 2) }}</span>
                                     </li>
                                     <li class="list-group-item d-flex">
-                                        <span>Discount {{(!empty($order->coupon_code)) ? '('.$order->coupon_code.')' : '' }}</span>
-                                        <span class="ms-auto">${{ number_format($order->discount,2) }}</span>
+                                        <span>Discount
+                                            {{ !empty($order->coupon_code) ? '(' . $order->coupon_code . ')' : '' }}</span>
+                                        <span class="ms-auto">${{ number_format($order->discount, 2) }}</span>
                                     </li>
 
                                     <li class="list-group-item d-flex">
                                         <span>Shipping</span>
-                                        <span class="ms-auto">${{ number_format($order->shipping,2) }}</span>
+                                        <span class="ms-auto">${{ number_format($order->shipping, 2) }}</span>
                                     </li>
                                     <li class="list-group-item d-flex fs-lg fw-bold">
                                         <span>Grand Total</span>
-                                        <span class="ms-auto">${{ number_format($order->grand_total ,2) }}</span>
+                                        <span class="ms-auto">${{ number_format($order->grand_total, 2) }}</span>
                                     </li>
                                 </ul>
                             </div>

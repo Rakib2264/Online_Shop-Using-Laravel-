@@ -127,6 +127,7 @@ Route::group(['middleware' => 'admin.auth'], function () {
     // Orders Route
     Route::get('/orders', [OrderController::class, 'index'])->name('order.index');
     Route::get('/orders/{id}', [OrderController::class, 'detail'])->name('order.detail');
+    Route::post('/change-Order-Status/{id}', [OrderController::class, 'changeOrderStatus'])->name('order.changeOrderStatus');
 
 
 
