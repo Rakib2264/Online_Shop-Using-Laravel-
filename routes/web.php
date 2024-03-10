@@ -51,6 +51,7 @@ Route::get('/thank-you/{orderId}', [AddToCartController::class, 'thanku'])->name
 Route::post('/getOrder-Summery', [AddToCartController::class, 'getOrderSummery'])->name('frontend.getOrderSummery');
 Route::post('/applyDiscount', [AddToCartController::class, 'applyDiscount'])->name('frontend.applyDiscount');
 Route::post('/remove-Discount', [AddToCartController::class, 'removeCoupon'])->name('frontend.removeDiscount');
+Route::post('/add-towishList', [FrontController::class,'addtowishlist'])->name('frontend.addtowishlist');
 
 // auth user interface
 Route::group(['prefix' => 'account'], function () {
@@ -65,6 +66,9 @@ Route::group(['prefix' => 'account'], function () {
         Route::get('/logout', [AuthController::class, 'logout'])->name('frontend.logout');
         Route::get('/my-orders', [AuthController::class, 'orders'])->name('frontend.orders');
         Route::get('/order-details/{id}', [AuthController::class, 'orderDetails'])->name('frontend.orderDetails');
+        Route::get('/wish-list', [AuthController::class, 'wishlist'])->name('frontend.wishlist');
+        Route::post('/remove-wish-list', [AuthController::class, 'removeProductFromWishList'])->name('frontend.removeProductFromWishList');
+
     });
 });
 // for backend

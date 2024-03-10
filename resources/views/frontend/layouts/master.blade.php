@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title><?php echo !empty($title) ? 'Title-' . $title : 'Home'; ?></title>
     <meta name="description" content="" />
-     <meta name="viewport"
+    <meta name="viewport"
         content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1, user-scalable=no" />
 
     <meta name="HandheldFriendly" content="True" />
@@ -50,7 +50,6 @@
     <!-- Fav Icon -->
     <link rel="shortcut icon" type="image/x-icon" href="#" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
 </head>
 
 <body data-instant-intensity="mousedown">
@@ -59,20 +58,18 @@
         <div class="container">
             <div class="row align-items-center py-3 d-none d-lg-flex justify-content-between">
                 <div class="col-lg-4 logo">
-                    <a href="{{route('frontend.home')}}" class="text-decoration-none">
+                    <a href="{{ route('frontend.home') }}" class="text-decoration-none">
                         <span class="h1 text-uppercase text-primary bg-dark px-2">Grocary</span>
                         <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">Store</span>
                     </a>
                 </div>
                 <div class="col-lg-6 col-6 text-left  d-flex justify-content-end align-items-center">
                     @if (Auth::check())
-                    <a href="{{route('frontend.profile')}}" class="nav-link text-dark">My Account</a>
+                        <a href="{{ route('frontend.profile') }}" class="nav-link text-dark">My Account</a>
                     @else
-                    <a href="{{route('frontend.login')}}" class="nav-link text-dark">Login / Register</a>
-
-
+                        <a href="{{ route('frontend.login') }}" class="nav-link text-dark">Login / Register</a>
                     @endif
-                     <form action="">
+                    <form action="">
                         <div class="input-group">
                             <input type="text" placeholder="Search For Products" class="form-control"
                                 aria-label="Amount (to the nearest dollar)">
@@ -115,7 +112,8 @@
                                         <ul class="dropdown-menu dropdown-menu-dark">
                                             @foreach ($categiry->sub_category as $sub_category)
                                                 <li><a class="dropdown-item nav-link"
-                                                        href="{{route('frontend.shop',[$categiry->slug,$sub_category->slug])}}">{{ $sub_category->name }}</a></li>
+                                                        href="{{ route('frontend.shop', [$categiry->slug, $sub_category->slug]) }}">{{ $sub_category->name }}</a>
+                                                </li>
                                             @endforeach
                                         </ul>
                                     @endif
@@ -125,7 +123,7 @@
                     </ul>
                 </div>
                 <div class="right-nav py-0">
-                    <a href="{{route('frontend.cart')}}" class="ml-3 d-flex pt-2">
+                    <a href="{{ route('frontend.cart') }}" class="ml-3 d-flex pt-2">
                         <i class="fas fa-shopping-cart text-primary"></i>
                     </a>
                 </div>
@@ -185,6 +183,25 @@
             </div>
         </div>
     </footer>
+
+    <!-- Wish list Modal -->
+    <div class="modal fade" id="wishlistmodal" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Success</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                 </div>
+            </div>
+        </div>
+    </div>
     <script src="{{ asset('frontend') }}/js/jquery-3.6.0.min.js"></script>
     <script src="{{ asset('frontend') }}/js/bootstrap.bundle.5.1.3.min.js"></script>
     <script src="{{ asset('frontend') }}/js/instantpages.5.1.0.min.js"></script>
@@ -208,34 +225,56 @@
             }
         }
         $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+
+        // add to cart
+        function addToCart(id) {
+            $.ajax({
+                url: '{{ route('frontend.addToCart') }}',
+                type: 'post',
+                data: {
+                    id: id
+                },
+                dataType: 'json',
+                success: function(res) {
+
+                    if (res.status == true) {
+                        window.location.href = "{{ route('frontend.cart') }}";
+
+                    } else {
+                        alert(res.msg);
+                    }
+
                 }
             });
+        }
 
-                      // add to cart
-                      function addToCart(id) {
-                $.ajax({
-                    url: '{{ route('frontend.addToCart') }}',
-                    type: 'post',
-                    data: {
-                        id: id
-                    },
-                    dataType: 'json',
-                    success: function(res) {
-
-                        if (res.status == true) {
-                            window.location.href="{{ route('frontend.cart') }}";
-
-                        }else{
-                            alert(res.msg);
-                        }
+        //add wish list
+        function addtowishlist(id) {
+            $.ajax({
+                url: "{{ route('frontend.addtowishlist') }}",
+                type: 'post',
+                data: {
+                    id: id
+                },
+                dataType: 'json',
+                success: function(res) {
+                    if (res.status == true) {
+                        $("#wishlistmodal .modal-body").html(res.msg)
+                        $("#wishlistmodal").modal('show')
+                    } else {
+                        window.location.href = "{{ route('frontend.login') }}";
 
                     }
-                });
-            }
 
-        </script>
+                }
+            });
+        }
+    </script>
 
     @yield('customjs')
 </body>

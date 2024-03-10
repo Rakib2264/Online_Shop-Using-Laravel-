@@ -120,7 +120,7 @@
                                                 <a href="{{route('frontend.product_detail',$product->slug)}}" class="product-img">
 
                                                     @if (!empty($productImg->image))
-                                                        <img src="{{ asset('product/small/' . $productImg->image) }}"
+                                                        <img src="{{ asset('products/small/' . $productImg->image) }}"
                                                             class="img-thumbnail">
                                                     @else
                                                         <img src="{{ asset('admin-assets/img/default-150x150.png') }}"
@@ -128,7 +128,7 @@
                                                     @endif
 
                                                 </a>
-                                                <a class="whishlist" href="222"><i class="far fa-heart"></i></a>
+                                                <a class="whishlist" onclick="addtowishlist({{$product->id}})" href="javascript:void(0)"><i class="far fa-heart"></i></a>
 
                                                 <div class="product-action">
                                                     <a class="btn btn-dark" href="javascript:void(0)" onclick="addToCart({{ $product->id }})">
