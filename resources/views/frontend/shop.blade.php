@@ -232,6 +232,11 @@
                     url += '&brand=' + brands.toString();
                 }
 
+                // sorting filter
+                var keyword = $('#search').val();
+                if (keyword.length > 0) {
+                    url += '&search='+keyword;
+                }
                 // Append the selected sorting option to the URL
                 url += '&sort=' + $("#sort").val();
 

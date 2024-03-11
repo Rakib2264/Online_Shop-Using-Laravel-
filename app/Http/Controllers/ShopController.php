@@ -49,6 +49,13 @@ class ShopController extends Controller
                 $products = $products->whereBetween('price', [intval($request->get('price_min')), intval($request->get('price_max'))]);
             }
         }
+
+        // user interface search
+
+        if (!empty($request->get('search'))) {
+            $products = $products->where('title', 'like','%'.$request->get('search').'%');
+
+        }
         // Get the price range values
         $pricemax = (intval($request->get('price_max')) == 0) ? 1000 : $request->get('price_max');
         $pricemin = intval($request->get('price_min'));
