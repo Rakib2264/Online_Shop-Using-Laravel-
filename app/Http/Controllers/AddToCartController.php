@@ -288,6 +288,15 @@ class AddToCartController extends Controller
                 $orderitem->price = $item->price;
                 $orderitem->total = $item->price * $item->qty;
                 $orderitem->save();
+                // update product stock
+                $productData = Product::find($item->id);
+                if ($productData->track_qty == 'Yes') {
+                    $currentQty = $productData->qty;
+                    $updateQty = $currentQty - $item->qty;
+                    $productData->qty = $updateQty;
+                    $productData->save();
+                }
+
             }
             // send order Email
             orderEmail($order->id);
