@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Country;
+use App\Models\CustomerAddress;
 use App\Models\Order;
 use App\Models\OrderItems;
 use App\Models\User;
@@ -80,9 +82,88 @@ class AuthController extends Controller
 
     public function profile()
     {
-
-        return view('frontend.account.profile');
+        $country = Country::orderBy('name','ASC')->get();
+        $user = User::where('id',Auth::user()->id)->first();
+        $coustomerAddress = CustomerAddress::where('user_id',Auth::user()->id)->first();
+        return view('frontend.account.profile',compact('user','country','coustomerAddress'));
     }
+
+    public function updateProfile(Request $request){
+        $userId = Auth::user()->id;
+       $validator = Validator::make($request->all(),[
+
+        'name'=>'required',
+        'email' => 'required|email|unique:users,email,' . $userId . ',id',
+        'phone'=>'required'
+       ]);
+
+       if ($validator->passes()) {
+        $user = User::find($userId);
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->phone = $request->phone;
+        $user->save();
+        session()->flash('success','User Profile Updated');
+        return response()->json([
+            'status'=>true,
+            'msg'=>'User Profile Updated'
+        ]);
+       }else{
+        return response()->json([
+            'status'=>false,
+            'errors'=>$validator->errors(),
+        ]);
+       }
+
+    }
+    public function updateAddress(Request $request){
+        $userId = Auth::user()->id;
+       $validator = Validator::make($request->all(),[
+
+        'first_name' => 'required|min:5',
+        'last_name' => 'required',
+        'email' => 'required|email',
+        'mobile' => 'required',
+        'country' => 'required',
+        'address' => 'required|min:15',
+        'city' => 'required',
+        'state' => 'required',
+        'zip' => 'required',
+       ]);
+
+       if ($validator->passes()) {
+
+        CustomerAddress::updateOrCreate(
+            ['user_id' => $userId],
+            [
+                'user_id' => $userId,
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+                'email' => $request->email,
+                'mobile' => $request->mobile,
+                'country_id' => $request->country,
+                'address' => $request->address,
+                'city' => $request->city,
+                'state' => $request->state,
+                'zip' => $request->zip,
+                'apartment' => $request->apartment,
+                'notes' => $request->order_notes,
+            ]
+        );
+        session()->flash('success','User Address Updated');
+        return response()->json([
+            'status'=>true,
+            'msg'=>'User Address Updated'
+        ]);
+       }else{
+        return response()->json([
+            'status'=>false,
+            'errors'=>$validator->errors(),
+        ]);
+       }
+
+    }
+
     public function logout()
     {
         Auth::logout();
