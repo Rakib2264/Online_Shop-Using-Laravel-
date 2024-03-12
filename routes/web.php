@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\ProductSubCategoryController;
 use App\Http\Controllers\Admin\ShippingController;
 use App\Http\Controllers\Admin\SubCategory;
 use App\Http\Controllers\Admin\SubCategoryController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\ShopController;
@@ -51,7 +52,7 @@ Route::get('/thank-you/{orderId}', [AddToCartController::class, 'thanku'])->name
 Route::post('/getOrder-Summery', [AddToCartController::class, 'getOrderSummery'])->name('frontend.getOrderSummery');
 Route::post('/applyDiscount', [AddToCartController::class, 'applyDiscount'])->name('frontend.applyDiscount');
 Route::post('/remove-Discount', [AddToCartController::class, 'removeCoupon'])->name('frontend.removeDiscount');
-Route::post('/add-towishList', [FrontController::class,'addtowishlist'])->name('frontend.addtowishlist');
+Route::post('/add-towishList', [FrontController::class, 'addtowishlist'])->name('frontend.addtowishlist');
 
 // auth user interface
 Route::group(['prefix' => 'account'], function () {
@@ -70,7 +71,6 @@ Route::group(['prefix' => 'account'], function () {
         Route::get('/order-details/{id}', [AuthController::class, 'orderDetails'])->name('frontend.orderDetails');
         Route::get('/wish-list', [AuthController::class, 'wishlist'])->name('frontend.wishlist');
         Route::post('/remove-wish-list', [AuthController::class, 'removeProductFromWishList'])->name('frontend.removeProductFromWishList');
-
     });
 });
 // for backend
@@ -138,6 +138,11 @@ Route::group(['middleware' => 'admin.auth'], function () {
     Route::get('/orders/{id}', [OrderController::class, 'detail'])->name('order.detail');
     Route::post('/change-Order-Status/{id}', [OrderController::class, 'changeOrderStatus'])->name('order.changeOrderStatus');
     Route::post('/Order-send-Invoice-Email/{id}', [OrderController::class, 'sendInvoiceEmail'])->name('order.sendInvoiceEmail');
+
+    // Users Route
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
+    Route::post('/users/store', [UserController::class, 'store'])->name('users.store');
 
 
 
