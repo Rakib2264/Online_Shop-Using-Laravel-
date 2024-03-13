@@ -72,7 +72,8 @@
 
                     <form action="{{ route('frontend.shop') }}" method="GET">
                         <div class="input-group">
-                            <input value="{{ Request::get('search') }}" type="text" placeholder="Search For Products" id="search" name="search" class="form-control">
+                            <input value="{{ Request::get('search') }}" type="text"
+                                placeholder="Search For Products" id="search" name="search" class="form-control">
                             <button type="submit" class="input-group-text">
                                 <i class="fa fa-search"></i>
                             </button>
@@ -150,11 +151,14 @@
                     <div class="footer-card">
                         <h3>Important Links</h3>
                         <ul>
-                            <li><a href="about-us.php" title="About">About</a></li>
-                            <li><a href="contact-us.php" title="Contact Us">Contact Us</a></li>
-                            <li><a href="#" title="Privacy">Privacy</a></li>
-                            <li><a href="#" title="Privacy">Terms & Conditions</a></li>
-                            <li><a href="#" title="Privacy">Refund Policy</a></li>
+                            @if (staticPage()->isNotEmpty())
+                                @foreach (staticPage() as $page)
+                                    <li><a href="{{ route('frontend.page', $page->slug) }}"
+                                            title="{{ $page->name }}">{{ $page->name }}</a></li>
+                                @endforeach
+
+                            @endif
+
                         </ul>
                     </div>
                 </div>
@@ -198,7 +202,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                 </div>
+                </div>
             </div>
         </div>
     </div>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Page;
 use App\Models\Product;
 use App\Models\Wishlists;
 use Illuminate\Http\Request;
@@ -19,18 +20,18 @@ class FrontController extends Controller
     public function addtowishlist(Request $request)
     {
         if (Auth::check() == false) {
-            session(['url.intended' =>url()->previous()]);
-           return response()->json([
-            'status'=>false
-           ]);
+            session(['url.intended' => url()->previous()]);
+            return response()->json([
+                'status' => false
+            ]);
         }
 
         $product = Product::find($request->id);
         if ($product == null) {
             return response()->json([
-                'status'=>true,
-                'msg'=>'<div class=" alert alert-danger">Product Not Found</div>'
-               ]);
+                'status' => true,
+                'msg' => '<div class=" alert alert-danger">Product Not Found</div>'
+            ]);
         }
 
 
@@ -38,7 +39,7 @@ class FrontController extends Controller
             [
                 'user_id' => Auth::user()->id,
                 'product_id' => $request->id,
-        ],
+            ],
             [
                 'user_id' => Auth::user()->id,
                 'product_id' => $request->id,
@@ -51,11 +52,18 @@ class FrontController extends Controller
 
 
         return response()->json([
-            'status'=>true,
-            'msg'=>'<div class=" alert alert-success"><strong>"'.$product->title.'" </strong>Aded In Your Wish List</div>'
-           ]);
-
+            'status' => true,
+            'msg' => '<div class=" alert alert-success"><strong>"' . $product->title . '" </strong>Aded In Your Wish List</div>'
+        ]);
     }
 
+    public function page($slug)
+    {
 
+        $pages = Page::where('slug',$slug)->first();
+        if ($pages == null) {
+            abort(404);
+        }
+        return view('frontend.page', compact('pages'));
+    }
 }

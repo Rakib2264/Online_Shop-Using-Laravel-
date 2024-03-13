@@ -72,7 +72,7 @@
                 success: function(res) {
                     $("button[type=submit]").prop('disabled', false);
 
-                    if (res.status === false) {
+                    if (res.status == false) {
                         $('#name').addClass('is-invalid');
 
                         $('#name').siblings('p').addClass('invalid-feedback').html(res.errors.name);

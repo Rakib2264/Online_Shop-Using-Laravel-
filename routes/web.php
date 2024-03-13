@@ -54,6 +54,7 @@ Route::post('/getOrder-Summery', [AddToCartController::class, 'getOrderSummery']
 Route::post('/applyDiscount', [AddToCartController::class, 'applyDiscount'])->name('frontend.applyDiscount');
 Route::post('/remove-Discount', [AddToCartController::class, 'removeCoupon'])->name('frontend.removeDiscount');
 Route::post('/add-towishList', [FrontController::class, 'addtowishlist'])->name('frontend.addtowishlist');
+Route::get('/page/{slug}', [FrontController::class, 'page'])->name('frontend.page');
 
 // auth user interface
 Route::group(['prefix' => 'account'], function () {
@@ -150,11 +151,11 @@ Route::group(['middleware' => 'admin.auth'], function () {
 
       // Pages Route
       Route::get('/pages', [PageController::class, 'index'])->name('page.index');
-      Route::get('/page/create', [PageController::class, 'create'])->name('page.create');
-      Route::post('/page/store', [PageController::class, 'store'])->name('page.store');
-    //   Route::get('/users/edit/{id}', [UserController::class, 'edit'])->name('users.edit');
-    //   Route::put('/users/update/{id}', [UserController::class, 'update'])->name('users.update');
-    //   Route::delete('/users/delete/{id}', [UserController::class, 'delete'])->name('users.delete');
+      Route::get('/pages/create', [PageController::class, 'create'])->name('page.create');
+      Route::post('/pages/store', [PageController::class, 'store'])->name('page.store');
+      Route::get('/pages/edit/{id}', [PageController::class, 'edit'])->name('page.edit');
+      Route::put('/pages/update/{id}', [PageController::class, 'update'])->name('page.update');
+      Route::delete('/pages/delete/{id}', [PageController::class, 'delete'])->name('page.delete');
 
 
     //if categoey select then subcategory i mean category wize subcategoey show
