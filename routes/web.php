@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\DiscountCodeController;
 use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Admin\ImagesController;
 use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProductImageController;
 use App\Http\Controllers\Admin\ProductSubCategoryController;
@@ -147,6 +148,13 @@ Route::group(['middleware' => 'admin.auth'], function () {
     Route::put('/users/update/{id}', [UserController::class, 'update'])->name('users.update');
     Route::delete('/users/delete/{id}', [UserController::class, 'delete'])->name('users.delete');
 
+      // Pages Route
+      Route::get('/pages', [PageController::class, 'index'])->name('page.index');
+      Route::get('/page/create', [PageController::class, 'create'])->name('page.create');
+      Route::post('/page/store', [PageController::class, 'store'])->name('page.store');
+    //   Route::get('/users/edit/{id}', [UserController::class, 'edit'])->name('users.edit');
+    //   Route::put('/users/update/{id}', [UserController::class, 'update'])->name('users.update');
+    //   Route::delete('/users/delete/{id}', [UserController::class, 'delete'])->name('users.delete');
 
 
     //if categoey select then subcategory i mean category wize subcategoey show
