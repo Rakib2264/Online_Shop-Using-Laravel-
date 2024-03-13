@@ -82,7 +82,7 @@
 
                                         </td>
                                         <td>
-                                            {{-- <a href="{{ route('category.edit', $category->id) }}">
+                                            <a href="{{ route('users.edit', $user->id) }}">
                                                 <svg class="filament-link-icon w-4 h-4 mr-1"
                                                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
                                                     fill="currentColor" aria-hidden="true">
@@ -90,8 +90,8 @@
                                                         d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z">
                                                     </path>
                                                 </svg>
-                                            </a> --}}
-                                            <a href="#" onclick="deleteCategory({{ $user->id }})"
+                                            </a>
+                                            <a href="#" onclick="deleteUser({{ $user->id }})"
                                                 class="text-danger w-4 h-4 mr-1">
                                                 <svg wire:loading.remove.delay="" wire:target=""
                                                     class="filament-link-icon w-4 h-4 mr-1"
@@ -123,9 +123,9 @@
 @endsection
 @section('customJs')
     <script>
-        function deleteCategory(id) {
+        function deleteUser(id) {
 
-            var url = '{{ route('category.delete', 'ID') }}'
+            var url = '{{ route('users.delete', 'ID') }}'
             var newUrl = url.replace("ID", id)
 
 
@@ -139,7 +139,7 @@
                     },
                     success: function(res) {
                         // Redirect to the category index page upon successful deletion
-                        window.location.href = "{{ route('category.index') }}";
+                        window.location.href = "{{ route('users.index') }}";
                     },
                     error: function(xhr, status, error) {
                         // Handle error, if any
