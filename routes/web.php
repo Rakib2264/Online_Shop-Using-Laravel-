@@ -73,6 +73,8 @@ Route::group(['prefix' => 'account'], function () {
         Route::get('/order-details/{id}', [AuthController::class, 'orderDetails'])->name('frontend.orderDetails');
         Route::get('/wish-list', [AuthController::class, 'wishlist'])->name('frontend.wishlist');
         Route::post('/remove-wish-list', [AuthController::class, 'removeProductFromWishList'])->name('frontend.removeProductFromWishList');
+        Route::get('/change-password-form', [AuthController::class, 'showchangePasswordForm'])->name('frontend.showchangePasswordForm');
+        Route::post('/change-password', [AuthController::class, 'changePassword'])->name('frontend.changePassword');
     });
 });
 // for backend

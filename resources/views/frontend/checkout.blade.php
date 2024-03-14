@@ -247,7 +247,7 @@
 
         $("#orderForm").submit(function(e) {
             e.preventDefault();
-            $('button[type="submit"]').prop('disibled', true);
+            $('button[type="submit"]').prop('disabled', true);
             $.ajax({
                 url: '{{ route('frontend.processCheckout') }}',
                 type: 'post',
@@ -257,7 +257,7 @@
 
                     var errors = res.errors;
 
-                    $('button[type="submit"]').prop('disibled', false);
+                    $('button[type="submit"]').prop('disabled', false);
 
 
                     if (res.status == false) {
