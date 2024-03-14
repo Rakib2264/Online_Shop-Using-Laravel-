@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProductImageController;
 use App\Http\Controllers\Admin\ProductSubCategoryController;
+use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\ShippingController;
 use App\Http\Controllers\Admin\SubCategory;
 use App\Http\Controllers\Admin\SubCategoryController;
@@ -158,6 +159,10 @@ Route::group(['middleware' => 'admin.auth'], function () {
       Route::get('/pages/edit/{id}', [PageController::class, 'edit'])->name('page.edit');
       Route::put('/pages/update/{id}', [PageController::class, 'update'])->name('page.update');
       Route::delete('/pages/delete/{id}', [PageController::class, 'delete'])->name('page.delete');
+    //   settings route
+    Route::get('/show-Change-PasswordForm', [SettingController::class, 'showChangePasswordForm'])->name('showChangePasswordForm');
+    Route::post('/process-Change-Password', [SettingController::class, 'processChangePassword'])->name('admin.processChangePassword');
+
 
 
     //if categoey select then subcategory i mean category wize subcategoey show
