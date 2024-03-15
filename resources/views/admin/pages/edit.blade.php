@@ -7,9 +7,6 @@
                 <div class="col-sm-6">
                     <h1>Edit Page</h1>
                 </div>
-                <div class="col-sm-6 text-right">
-                    <a href="{{ route('page.index') }}" class="btn btn-primary">Back</a>
-                </div>
             </div>
         </div>
     </section>

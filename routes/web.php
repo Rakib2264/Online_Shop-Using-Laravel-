@@ -56,7 +56,7 @@ Route::post('/applyDiscount', [AddToCartController::class, 'applyDiscount'])->na
 Route::post('/remove-Discount', [AddToCartController::class, 'removeCoupon'])->name('frontend.removeDiscount');
 Route::post('/add-towishList', [FrontController::class, 'addtowishlist'])->name('frontend.addtowishlist');
 Route::get('/page/{slug}', [FrontController::class, 'page'])->name('frontend.page');
-
+Route::post('/send-contact-email', [FrontController::class, 'sendContactEmail'])->name('frontend.sendContactEmail');
 // auth user interface
 Route::group(['prefix' => 'account'], function () {
     Route::group(['middleware' => 'guest'], function () {
