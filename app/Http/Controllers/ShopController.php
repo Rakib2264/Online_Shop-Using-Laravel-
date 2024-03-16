@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Product_Rating;
 use App\Models\SubCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ShopController extends Controller
 {
@@ -45,7 +47,7 @@ class ShopController extends Controller
             if ($request->get('price_max') == 1000) {
                 // If max price is set to 1000, include all prices above the min price
                 $products = $products->whereBetween('price', [intval($request->get('price_min')), 100000]);
-            }else{
+            } else {
                 $products = $products->whereBetween('price', [intval($request->get('price_min')), intval($request->get('price_max'))]);
             }
         }
@@ -53,8 +55,7 @@ class ShopController extends Controller
         // user interface search
 
         if (!empty($request->get('search'))) {
-            $products = $products->where('title', 'like','%'.$request->get('search').'%');
-
+            $products = $products->where('title', 'like', '%' . $request->get('search') . '%');
         }
         // Get the price range values
         $pricemax = (intval($request->get('price_max')) == 0) ? 1000 : $request->get('price_max');
@@ -86,21 +87,77 @@ class ShopController extends Controller
         return view('frontend.shop', compact('categories', 'brands', 'products', 'categorySelected', 'subcategorySelected', 'brandsArray', 'pricemin', 'pricemax', 'sort'));
     }
 
-    public function product_detail($slug){
+    public function product_detail($slug)
+    {
 
-        $product = Product::where('slug',$slug)->with('productmages')->first();
+        $product = Product::where('slug',$slug)
+        ->withCount('product_ratings')
+        ->withSum('product_ratings','rating')
+        ->with(['productmages','product_ratings'])
+        ->first();
+
+
 
         if ($product == null) {
-             abort(404);
+            abort(404);
         }
 
         $relatedProducts = [];
         if ($product->related_products != '') {
             $productArray = explode(',', $product->related_products);
-            $relatedProducts = Product::whereIn('id', $productArray)->where('status',1)->get();
+            $relatedProducts = Product::whereIn('id', $productArray)->where('status', 1)->get();
+        }
+        // Rating calclation
+        $avgRating = '0.00';
+        $avgRatingPer = 0;
+        if ($product->product_rating_count > 0) {
+            $avgRating = number_format(($product->product_rating_sum_rating/$product->product_rating_count),2);
+            $avgRatingPer = ($avgRating*100)/5;
+
         }
 
-        return view('frontend.product_detail',compact('product','relatedProducts'));
+        return view('frontend.product_detail', compact('product','relatedProducts','avgRating','avgRatingPer'));
+    }
+    public function saveRating(Request $request , $id)
+    {
+        $validator = Validator::make($request->all(), [
 
+            'name' => 'required|min:3',
+            'email' => 'required|email',
+            'comment' => 'required|min:10',
+            'rating' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+
+            return response()->json([
+                'status'=>false,
+                'errors'=>$validator->errors()
+            ]);
+
+        }else{
+
+           $count= Product_Rating::where('email',$request->email)->count();
+           if ($count > 0) {
+            session()->flash('error','You Already Rated This Product');
+            return response()->json([
+                'status'=>true,
+             ]);
+           }
+            $product_rating = new Product_Rating();
+            $product_rating->product_id = $id;
+            $product_rating->username = $request->name;
+            $product_rating->email = $request->email;
+            $product_rating->comment = $request->comment;
+            $product_rating->rating = $request->rating;
+            $product_rating->status = 0;
+            $product_rating->save();
+            session()->flash('success','Thanks for your rating');
+            return response()->json([
+                'status'=>true,
+                'msg'=>'Thanks For Your Rating.'
+            ]);
+
+        }
     }
 }

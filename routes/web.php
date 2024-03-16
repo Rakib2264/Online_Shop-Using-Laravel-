@@ -61,7 +61,7 @@ Route::get('/forgot-Password', [AuthController::class, 'forgotPassword'])->name(
 Route::post('/process-forgot-Password', [AuthController::class, 'processforgotPassword'])->name('frontend.processforgotPassword');
 Route::get('/reset-Password/{token}', [AuthController::class, 'resetPassword'])->name('frontend.resetPassword');
 Route::post('/process-Reset-Password', [AuthController::class, 'processResetPassword'])->name('frontend.processResetPassword');
-
+Route::post('/save-rating/{productid}', [ShopController::class, 'saveRating'])->name('frontend.saveRating');
 // auth user interface
 Route::group(['prefix' => 'account'], function () {
     Route::group(['middleware' => 'guest'], function () {
