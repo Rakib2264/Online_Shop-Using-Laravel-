@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Catimage;
 use App\Models\Product;
 use App\Models\ProductImages;
+use App\Models\ProductRating;
 use App\Models\SubCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -78,7 +79,7 @@ class ProductController extends Controller
             $product->track_qty = $request->track_qty;
             $product->qty = $request->qty;
             $product->status = $request->status;
-            $product->related_products = (!empty($request->related_products)) ? implode(',',$request->related_products) : '';
+            $product->related_products = (!empty($request->related_products)) ? implode(',', $request->related_products) : '';
 
 
             // Save the product
@@ -140,7 +141,7 @@ class ProductController extends Controller
         // Fetch Product Image
         $productimg = ProductImages::where('products_id', $product->id)->get();
         // end
-         $subCategory = SubCategory::where('category_id', $product->category_id)->get();
+        $subCategory = SubCategory::where('category_id', $product->category_id)->get();
         $categories = Category::orderBy('name', "DESC")->get();
         $brands = Brand::orderBy('name', "DESC")->get();
 
@@ -150,7 +151,7 @@ class ProductController extends Controller
             $relatedProducts = Product::whereIn('id', $productArray)->get();
         }
 
-        return view('admin.product.edit', compact('categories', 'brands', 'product', 'subCategory', 'productimg','relatedProducts'));
+        return view('admin.product.edit', compact('categories', 'brands', 'product', 'subCategory', 'productimg', 'relatedProducts'));
     }
 
     public function update(Request $request, $id)
@@ -199,7 +200,7 @@ class ProductController extends Controller
             $product->track_qty = $request->track_qty;
             $product->qty = $request->qty;
             $product->status = $request->status;
-            $product->related_products = (!empty($request->related_products)) ? implode(',',$request->related_products) : '';
+            $product->related_products = (!empty($request->related_products)) ? implode(',', $request->related_products) : '';
 
             // Save the product
             $product->save();
@@ -278,24 +279,47 @@ class ProductController extends Controller
         ]);
     }
 
-    public function getProducts(Request $request){
+    public function getProducts(Request $request)
+    {
 
         $tempProduct = [];
 
-        if($request->term != ""){
+        if ($request->term != "") {
 
-            $products = Product::where('title','like','%'.$request->term.'%')->get();
-            if($products != null){
+            $products = Product::where('title', 'like', '%' . $request->term . '%')->get();
+            if ($products != null) {
                 foreach ($products as $product) {
-                   $tempProduct[] = array('id'=>$product->id, 'text'=>$product->title);
+                    $tempProduct[] = array('id' => $product->id, 'text' => $product->title);
                 }
             }
-
         }
         return response()->json([
-            'tags'=>$tempProduct,
-            'status'=>true
+            'tags' => $tempProduct,
+            'status' => true
         ]);
+    }
 
+    public function productRating(Request $request)
+    {
+        $ratings = ProductRating::select('product_ratings.*', 'products.title as productTitle')->orderBy('product_ratings.created_at', 'DESC');
+        $ratings = $ratings->leftJoin('products', 'products.id', 'product_ratings.product_id');
+        if ($ratings->get('keyword') != "") {
+            $ratings = $ratings->where('products.title', 'like', '%' . $request->get('keyword') . '%');
+            $ratings = $ratings->orwhere('product_ratings.username', 'like', '%' . $request->get('keyword') . '%');
+        }
+        $ratings = $ratings->paginate(10);
+        return view('admin.product.ratings', compact('ratings'));
+    }
+
+    public function changeRatingStatus(Request $request)
+    {
+
+        $productrating = ProductRating::find($request->id);
+        $productrating->status = $request->status;
+        $productrating->save();
+        session()->flash('success', 'Status Changed');
+        return response()->json([
+            'status' => true
+        ]);
     }
 }

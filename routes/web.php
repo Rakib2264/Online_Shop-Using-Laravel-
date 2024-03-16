@@ -126,6 +126,8 @@ Route::group(['middleware' => 'admin.auth'], function () {
     Route::put('/product/update/{id}', [ProductController::class, 'update'])->name('product.update');
     Route::delete('/product/{id}/delete', [ProductController::class, 'destroy'])->name('product.delete');
     Route::get('/getProducts', [ProductController::class, 'getProducts'])->name('product.getProducts');
+    Route::get('/product_rating', [ProductController::class, 'productRating'])->name('product.productRating');
+    Route::get('/change-rating-status', [ProductController::class, 'changeRatingStatus'])->name('product.changeRatingStatus');
 
 
     // shipping Route

@@ -6,6 +6,7 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Product_Rating;
+use App\Models\ProductRating;
 use App\Models\SubCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -90,11 +91,11 @@ class ShopController extends Controller
     public function product_detail($slug)
     {
 
-        $product = Product::where('slug',$slug)
-        ->withCount('product_ratings')
-        ->withSum('product_ratings','rating')
-        ->with(['productmages','product_ratings'])
-        ->first();
+        $product = Product::where('slug', $slug)
+            ->withCount('product_ratings')
+            ->withSum('product_ratings','rating')
+            ->with(['productmages','product_ratings'])
+            ->first();
 
 
 
@@ -137,14 +138,14 @@ class ShopController extends Controller
 
         }else{
 
-           $count= Product_Rating::where('email',$request->email)->count();
+           $count= ProductRating::where('email',$request->email)->count();
            if ($count > 0) {
             session()->flash('error','You Already Rated This Product');
             return response()->json([
                 'status'=>true,
              ]);
            }
-            $product_rating = new Product_Rating();
+            $product_rating = new ProductRating();
             $product_rating->product_id = $id;
             $product_rating->username = $request->name;
             $product_rating->email = $request->email;
