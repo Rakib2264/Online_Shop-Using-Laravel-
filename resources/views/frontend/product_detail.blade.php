@@ -65,7 +65,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <small class="pt-1 ps-1">({{ ($product->product_rating_count > 1) ? $product->product_rating_count.' Reviews' :  $product->product_rating_count.' Review'}} )</small>
+                                <small class="pt-1 ps-1">({{ ($product->product_ratings_count > 1) ? $product->product_ratings_count.' Reviews' :  $product->product_ratings_count.' Review'}} )</small>
                             </div>
                             @if ($product->compare_price > 0)
                                 <h2 class="price text-secondary"><del>${{ $product->compare_price }}</del></h2>
@@ -195,7 +195,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="pt-2 ps-2">({{ ($product->product_rating_count > 1) ? $product->product_rating_count.' Reviews' :  $product->product_rating_count.' Review'}} )</div>
+                                                <div class="pt-2 ps-2">({{ ($product->product_ratings_count > 1) ? $product->product_ratings_count.' Reviews' :  $product->product_ratings_count.' Review'}} )</div>
                                             </div>
 
                                         </div>

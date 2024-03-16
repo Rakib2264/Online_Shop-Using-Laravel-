@@ -13,7 +13,7 @@ class Product extends Model
     }
 
     public function product_ratings(){
-        return $this->hasMany(ProductRating::class)->where('status', 1);
+        return $this->hasMany(ProductRating::class,'product_id','id')->where('status', 1);
     }
 
 }
